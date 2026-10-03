@@ -1,0 +1,592 @@
+OSCP+ ATTACK TECHNIQUE CHECKLIST
+================================
+
+Purpose:
+    Self-guided checklist of attack techniques, attack families,
+    and practical concepts relevant to OSCP+ preparation.
+
+    This is NOT a prerequisite/IT fundamentals checklist.
+    Topics should ideally be learned through hands-on labs,
+    self-built environments, CTFs, and attack scenarios.
+
+
+[1] RECONNAISSANCE & ENUMERATION
+================================
+
+[ ] Host discovery
+[ ] TCP port scanning
+[ ] UDP port scanning
+[ ] Full-port enumeration
+[ ] Service/version enumeration
+[ ] OS fingerprinting
+[ ] Banner grabbing
+[ ] Nmap NSE enumeration
+[ ] DNS enumeration
+[ ] DNS zone transfers
+[ ] Reverse DNS
+[ ] Subdomain enumeration
+[ ] Virtual host enumeration
+[ ] SMB enumeration
+[ ] Null/anonymous SMB sessions
+[ ] SMB share enumeration
+[ ] SMB/RPC enumeration
+[ ] LDAP enumeration
+[ ] SMTP enumeration
+[ ] SNMP enumeration
+[ ] FTP enumeration
+[ ] NFS enumeration
+[ ] HTTP/HTTPS enumeration
+[ ] Web technology fingerprinting
+[ ] Directory/file enumeration
+[ ] API endpoint enumeration
+[ ] Source-code inspection
+[ ] JavaScript enumeration
+[ ] Certificate/service information gathering
+[ ] Username enumeration
+[ ] Domain/workgroup identification
+[ ] Network/share/service relationship mapping
+
+
+[2] VULNERABILITY IDENTIFICATION & EXPLOIT RESEARCH
+===================================================
+
+[ ] Identify vulnerable software/version
+[ ] CVE research
+[ ] SearchSploit
+[ ] Exploit-DB research
+[ ] GitHub exploit/PoC research
+[ ] Vendor advisory research
+[ ] Determine exploit applicability
+[ ] Read exploit source code
+[ ] Modify public exploits
+[ ] Modify exploit parameters
+[ ] Modify payloads
+[ ] Modify callback IP/port
+[ ] Modify paths/commands
+[ ] Compile exploits
+[ ] Cross-compile exploits
+[ ] Troubleshoot/repair outdated exploits
+[ ] Understand exploit prerequisites
+[ ] Chain multiple vulnerabilities
+
+
+[3] WEB APPLICATION ATTACKS
+===========================
+
+[ ] Authentication attacks
+[ ] Default/weak credentials
+[ ] Authentication bypass
+[ ] Username enumeration
+[ ] Password attacks
+[ ] Session attacks
+[ ] Authorization bypass
+[ ] IDOR
+[ ] Forced browsing
+[ ] Privilege escalation through access control
+
+[ ] SQL Injection
+[ ] Authentication-bypass SQLi
+[ ] Error-based SQLi
+[ ] UNION-based SQLi
+[ ] Blind SQLi
+[ ] Time-based SQLi
+[ ] Database enumeration through SQLi
+[ ] Credential extraction through SQLi
+[ ] SQLi → command execution
+
+[ ] Command injection
+[ ] Blind command injection
+[ ] Command-filter bypass
+[ ] OS command chaining
+
+[ ] Directory/path traversal
+[ ] Local File Inclusion (LFI)
+[ ] Remote File Inclusion (RFI)
+[ ] PHP wrappers
+[ ] LFI → credential disclosure
+[ ] LFI → log poisoning
+[ ] LFI → code execution
+
+[ ] File upload vulnerabilities
+[ ] Extension bypass
+[ ] MIME-type bypass
+[ ] Magic-byte bypass
+[ ] Filename bypass
+[ ] Web shell upload
+[ ] Upload → code execution
+
+[ ] XSS
+[ ] Reflected XSS
+[ ] Stored XSS
+[ ] DOM XSS
+[ ] CSRF
+[ ] SSRF
+[ ] XXE
+[ ] SSTI
+[ ] Open redirect
+[ ] API attacks
+[ ] JWT attacks
+[ ] GraphQL attacks
+[ ] WebSocket attacks
+[ ] HTTP request smuggling
+
+
+[4] CREDENTIAL ATTACKS
+======================
+
+[ ] Credential discovery
+[ ] Credential reuse
+[ ] Default credentials
+[ ] Dictionary attacks
+[ ] Brute-force attacks
+[ ] Password spraying
+[ ] Credential stuffing
+[ ] Custom wordlists
+[ ] Password policy analysis
+[ ] Hash identification
+[ ] Hash cracking
+[ ] John the Ripper
+[ ] Hashcat
+[ ] Rule-based cracking
+[ ] Mask attacks
+[ ] NTLM cracking
+[ ] Net-NTLMv2 cracking
+[ ] Linux password hash cracking
+[ ] SSH key/passphrase attacks
+[ ] Credentials in configuration files
+[ ] Credentials in source code
+[ ] Credentials in environment variables
+[ ] Credentials in logs/history
+[ ] Credentials in backups
+[ ] Credentials in databases
+[ ] Credentials in browser/application stores
+[ ] Windows Credential Manager
+
+
+[5] INITIAL ACCESS
+==================
+
+[ ] Exploit exposed network services
+[ ] Exploit web applications
+[ ] Exploit public-facing software
+[ ] Exploit weak/default credentials
+[ ] SSH access
+[ ] FTP access
+[ ] SMB access
+[ ] RDP access
+[ ] WinRM access
+[ ] Web shell access
+[ ] Reverse shell
+[ ] Bind shell
+[ ] Client-side exploitation
+[ ] Public exploit modification
+[ ] Credential-based access
+
+
+[6] SHELLS & PAYLOADS
+=====================
+
+[ ] Reverse shells
+[ ] Bind shells
+[ ] Bash shells
+[ ] Netcat shells
+[ ] Python shells
+[ ] PHP shells
+[ ] PowerShell shells
+[ ] Windows executable payloads
+[ ] Staged payloads
+[ ] Non-staged payloads
+[ ] msfvenom
+[ ] Meterpreter
+[ ] Shell stabilization
+[ ] PTY allocation
+[ ] PowerShell payload execution
+[ ] Payload transfer
+[ ] Callback troubleshooting
+[ ] Basic payload obfuscation/encoding concepts
+
+
+[7] LINUX PRIVILEGE ESCALATION
+==============================
+
+[ ] Linux enumeration for privilege escalation
+[ ] SUID binaries
+[ ] SGID binaries
+[ ] SUID/SGID binary abuse
+[ ] Sudo misconfiguration
+[ ] sudo -l abuse
+[ ] GTFOBins
+[ ] Linux capabilities
+[ ] Capability abuse
+[ ] Writable files
+[ ] Writable directories
+[ ] Writable scripts
+[ ] PATH hijacking
+[ ] Cron jobs
+[ ] Cron wildcard abuse
+[ ] Systemd timers
+[ ] Writable services
+[ ] Service configuration abuse
+[ ] Environment-variable abuse
+[ ] Credential discovery
+[ ] SSH key discovery
+[ ] Shell history
+[ ] Configuration-file credentials
+[ ] Log-file credentials
+[ ] Kernel exploits
+[ ] Kernel version research
+[ ] Linux exploit compilation
+[ ] LinPEAS
+[ ] Automated enumeration → manual validation
+
+
+[8] WINDOWS PRIVILEGE ESCALATION
+================================
+
+[ ] Windows enumeration for privilege escalation
+[ ] Service enumeration
+[ ] Weak service permissions
+[ ] Writable service binaries
+[ ] Writable service configurations
+[ ] Service binary replacement
+[ ] Unquoted service paths
+[ ] DLL hijacking
+[ ] DLL search-order hijacking
+[ ] Scheduled task abuse
+[ ] Writable scheduled-task executables
+[ ] PATH hijacking
+[ ] Registry weaknesses
+[ ] AlwaysInstallElevated
+[ ] AutoRun weaknesses
+[ ] Stored Windows credentials
+[ ] Windows Credential Manager
+[ ] Sensitive files
+[ ] Weak permissions
+[ ] Token privileges
+[ ] Token impersonation
+[ ] SeImpersonatePrivilege
+[ ] SeAssignPrimaryTokenPrivilege
+[ ] SeBackupPrivilege
+[ ] SeRestorePrivilege
+[ ] SeDebugPrivilege
+[ ] SeTakeOwnershipPrivilege
+[ ] Potato-family attacks
+[ ] Windows kernel exploits
+[ ] Kernel exploit research
+[ ] WinPEAS
+[ ] PowerUp
+[ ] Seatbelt
+[ ] Automated enumeration → manual validation
+
+
+[9] ACTIVE DIRECTORY ENUMERATION
+================================
+
+[ ] Identify domain
+[ ] Identify Domain Controllers
+[ ] Identify domain users
+[ ] Identify domain groups
+[ ] Identify computers
+[ ] Identify organizational units
+[ ] Enumerate group memberships
+[ ] Enumerate sessions
+[ ] Enumerate logged-on users
+[ ] Enumerate SMB shares
+[ ] Enumerate LDAP
+[ ] Enumerate RPC
+[ ] Enumerate SPNs
+[ ] Enumerate password policies
+[ ] Enumerate Group Policy
+[ ] Enumerate ACLs
+[ ] Enumerate object permissions
+[ ] Enumerate trusts
+[ ] Enumerate domain relationships
+[ ] BloodHound
+[ ] SharpHound
+[ ] Analyze BloodHound attack paths
+[ ] Validate BloodHound paths manually
+
+
+[10] ACTIVE DIRECTORY AUTHENTICATION ATTACKS
+============================================
+
+[ ] NTLM authentication
+[ ] Net-NTLMv2
+[ ] NTLM credential capture
+[ ] NTLM relay concepts
+[ ] Pass-the-Hash
+[ ] Overpass-the-Hash
+[ ] Pass-the-Ticket
+[ ] Kerberos authentication
+[ ] TGT
+[ ] TGS
+[ ] SPNs
+[ ] Kerberoasting
+[ ] Service-ticket extraction
+[ ] Kerberoast hash cracking
+[ ] AS-REP roasting
+[ ] AS-REP hash cracking
+[ ] Password spraying against AD
+[ ] Credential reuse across hosts
+
+
+[11] ACTIVE DIRECTORY PRIVILEGE & OBJECT ABUSE
+==============================================
+
+[ ] Group membership abuse
+[ ] Nested-group abuse
+[ ] ACL enumeration
+[ ] ACL abuse
+[ ] GenericAll
+[ ] GenericWrite
+[ ] WriteDACL
+[ ] WriteOwner
+[ ] ForceChangePassword
+[ ] AddMember
+[ ] Resource-Based Constrained Delegation
+[ ] Delegation abuse
+[ ] Kerberos delegation concepts
+[ ] Silver tickets
+[ ] Golden tickets
+[ ] Domain-level privilege escalation
+[ ] Credential/secret extraction required for ticket attacks
+
+
+[12] ACTIVE DIRECTORY LATERAL MOVEMENT
+======================================
+
+[ ] SMB lateral movement
+[ ] PsExec
+[ ] Service-based execution
+[ ] Windows Remote Management (WinRM)
+[ ] WinRS
+[ ] WMI
+[ ] DCOM
+[ ] Remote scheduled tasks
+[ ] Remote service creation
+[ ] Pass-the-Hash lateral movement
+[ ] Pass-the-Ticket lateral movement
+[ ] Overpass-the-Hash lateral movement
+[ ] Identify where compromised credentials can authenticate
+[ ] Session-based lateral movement
+
+
+[13] PIVOTING & PORT FORWARDING
+===============================
+
+[ ] Identify network segmentation
+[ ] Identify pivot host
+[ ] Identify internal interfaces
+[ ] Identify internal routes
+[ ] Identify reachable internal hosts
+[ ] Identify inaccessible internal services
+[ ] Understand traffic direction
+
+[ ] SSH local port forwarding
+[ ] SSH remote port forwarding
+[ ] SSH dynamic port forwarding
+[ ] SSH SOCKS proxy
+[ ] SSH multi-hop forwarding
+[ ] Proxychains
+[ ] SOCKS4/SOCKS5
+[ ] Chisel
+[ ] Chisel reverse tunneling
+[ ] Socat
+[ ] Netcat tunneling
+[ ] Metasploit port forwarding
+[ ] Meterpreter pivoting
+[ ] Windows netsh portproxy
+[ ] Windows pivoting
+[ ] Reverse tunnels
+[ ] Multi-hop pivoting
+[ ] Pivot through Linux host
+[ ] Pivot through Windows host
+[ ] Access internal web services
+[ ] Access internal SMB services
+[ ] Access internal AD services
+[ ] Route enumeration tools through a tunnel
+
+
+[14] METASPLOIT
+==============
+
+[ ] Search for exploits
+[ ] Select exploit modules
+[ ] Configure exploit options
+[ ] Select/configure payloads
+[ ] Auxiliary modules
+[ ] Exploit modules
+[ ] Post modules
+[ ] Sessions
+[ ] Background sessions
+[ ] Meterpreter
+[ ] Meterpreter shell
+[ ] Meterpreter file operations
+[ ] Meterpreter system enumeration
+[ ] Meterpreter pivoting
+[ ] Meterpreter port forwarding
+[ ] Metasploit-based privilege escalation
+[ ] Understand automated exploitation rather than blindly executing modules
+
+
+[15] EXPLOIT DEVELOPMENT / BUFFER OVERFLOW
+==========================================
+
+[ ] Read exploit source
+[ ] Understand vulnerable code path
+[ ] Modify exploit code
+[ ] Modify shellcode/payload
+[ ] Architecture identification
+[ ] Stack fundamentals
+[ ] Registers
+[ ] Instruction pointer
+[ ] Buffer overflow fundamentals
+[ ] Offset identification
+[ ] Cyclic patterns
+[ ] Basic shellcode concepts
+[ ] Compile exploit
+[ ] Cross-compile exploit
+[ ] Debug failed exploit
+
+
+[16] CLIENT-SIDE ATTACKS
+========================
+
+[ ] Client-side attack surface identification
+[ ] Malicious documents
+[ ] Malicious links
+[ ] Browser-based attacks
+[ ] Office-based attacks
+[ ] User-interaction requirements
+[ ] Client-side exploit modification
+[ ] Client-side payload delivery
+[ ] Reverse-shell callbacks from client-side attacks
+
+
+[17] ANTIVIRUS / EDR EVASION FUNDAMENTALS
+=========================================
+
+[ ] Signature-based detection concepts
+[ ] Static detection concepts
+[ ] Behavioral detection concepts
+[ ] Payload obfuscation
+[ ] Encoding vs encryption
+[ ] Modify generated payloads
+[ ] Understand why common payloads are detected
+[ ] Basic isolated AV testing
+
+
+[18] POST-EXPLOITATION
+======================
+
+[ ] Re-enumerate after initial access
+[ ] Identify current privileges
+[ ] Identify credentials
+[ ] Identify additional users
+[ ] Identify additional hosts
+[ ] Identify additional interfaces
+[ ] Identify additional services
+[ ] Search for sensitive files
+[ ] Search for credentials
+[ ] Identify privilege escalation paths
+[ ] Identify lateral movement paths
+[ ] Identify pivot opportunities
+[ ] Maintain useful attack notes
+[ ] Preserve evidence
+
+
+[19] PERSISTENCE / POST-COMPROMISE CONCEPTS
+===========================================
+
+[ ] Scheduled-task persistence
+[ ] Service persistence
+[ ] Registry persistence
+[ ] SSH persistence
+[ ] Credential-based persistence
+[ ] Golden-ticket persistence concepts
+[ ] Shadow copies
+[ ] Understand persistence vs privilege escalation
+[ ] Understand persistence vs lateral movement
+
+
+[20] ATTACK CHAINING
+====================
+
+[ ] Enumeration → vulnerability discovery
+[ ] Web vulnerability → shell
+[ ] Credentials → remote service access
+[ ] Initial access → Linux privilege escalation
+[ ] Initial access → Windows privilege escalation
+[ ] Initial access → credential discovery
+[ ] Initial access → pivot
+[ ] Pivot → internal enumeration
+[ ] Pivot → internal exploitation
+[ ] Compromised host → lateral movement
+[ ] Lateral movement → privilege escalation
+[ ] AD enumeration → credential attack
+[ ] Credential attack → lateral movement
+[ ] Lateral movement → domain escalation
+[ ] Chain multiple low-severity weaknesses
+[ ] Continue enumeration after every major foothold
+
+
+============================================================
+LAB COMPLETION LEGEND
+============================================================
+
+[ ] = Not studied
+
+[~] = Understand the concept/theory
+
+[+] = Performed it in a controlled lab
+
+[x] = Successfully used it in an attack scenario
+
+[★] = Can recognize, perform, troubleshoot, and explain it
+      without relying on notes
+
+Recommended progression:
+
+[ ] → [~] → [+] → [x] → [★]
+
+A technique does NOT need to reach [★] before moving on.
+The checklist is a coverage map, not a linear course.
+
+
+LAB NOTE LINKING
+================
+
+For techniques involving a significant experiment, add a reference
+to the corresponding lab in your personal notes/repository.
+
+Example:
+
+[+] SSH local port forwarding
+    Lab: labs/ssh-local-forwarding.txt
+
+[+] nftables-based network segmentation
+    Lab: labs/nftables-pivot.txt
+
+[x] Kerberoasting
+    Lab: labs/kerberoasting-basic.txt
+
+
+PERSONAL RULE
+=============
+
+Learn the technique by understanding the problem it solves.
+
+Prefer:
+
+    "I created a situation that required this technique,
+     investigated why the normal approach failed,
+     discovered the technique, and tested it."
+
+over:
+
+    "A walkthrough told me to run this command."
+
+The checklist defines OSCP coverage.
+Curiosity determines the labs.
+The labs produce the notes.
+The notes become the documentation.
