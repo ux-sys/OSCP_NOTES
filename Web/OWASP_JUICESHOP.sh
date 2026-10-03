@@ -33,3 +33,4 @@ sudo docker pull bkimminich/juice-shop
 
 #Run Juice Shop on port 80
 sudo docker run --rm -p 80:3000 bkimminich/juice-shop
+

@@ -1,0 +1,15 @@
+# Steps to create virtual network in VMBox and simulate 
+#For Windows host
+#adapter in VM to "Internal Network" and "intnet" as the network
+#Set promiscous on for Kali VM
+
+cd "C:\Program Files\Oracle\VirtualBox" #change if ur files installed elsewhere
+
+VBoxManage dhcpserver add --network=intnet --server-ip=192.168.56.100 --netmask=255.255.255.0 --lower-ip=192.168.56.101 --upper-ip=192.168.56.200 --enable
+
+#Confirm it setup right
+VBoxManage list dhcpservers
+
+
+### TO DO: Add features to network like firewall, VLAN, Switch
+### Make more SDN focused
