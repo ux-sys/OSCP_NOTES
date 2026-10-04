@@ -1,0 +1,441 @@
+# OSCP TECHNICAL TECHNIQUES CHECKLIST
+
+Legend:
+[ ] Not studied
+[~] Understand concept/theory
+[+] Performed in controlled lab
+[x] Successfully used in an attack scenario
+[★] Can recognize, perform, troubleshoot, and explain without notes
+
+## RECONNAISSANCE & ENUMERATION
+
+[ ] Host discovery
+[ ] TCP port scanning
+[ ] UDP port scanning
+[ ] Service/version enumeration
+[ ] OS detection
+[ ] Banner grabbing
+[ ] DNS enumeration
+[ ] SMB enumeration
+[ ] SMTP enumeration
+[ ] SNMP enumeration
+[ ] FTP enumeration
+[ ] NFS enumeration
+[ ] HTTP/HTTPS enumeration
+[ ] Directory/file enumeration
+[ ] Virtual host enumeration
+[ ] API enumeration
+[ ] JavaScript/source-code enumeration
+[ ] TLS/certificate enumeration
+[ ] Username enumeration
+[ ] Domain/workgroup enumeration
+[ ] Network/share/service mapping
+
+## VULNERABILITY RESEARCH & EXPLOITATION
+
+[ ] CVE research
+[ ] SearchSploit / Exploit-DB
+[ ] GitHub PoC research
+[ ] Vendor advisory research
+[ ] Exploit applicability analysis
+[ ] Reading exploit source code
+[ ] Modifying existing exploits
+[ ] Exploit prerequisites/dependencies
+[ ] Payload/callback modification
+[ ] Path/parameter modification
+[ ] Compiling exploits
+[ ] Cross-compiling exploits
+[ ] Repairing outdated exploits
+[ ] Chaining vulnerabilities
+[ ] Manual exploitation
+
+## WEB APPLICATION ATTACKS
+
+[ ] Default/weak credentials
+[ ] Username enumeration
+[ ] Authentication bypass
+[ ] Session attacks
+[ ] Session/token manipulation
+[ ] Authorization bypass
+[ ] IDOR
+[ ] Forced browsing
+[ ] Access-control privilege escalation
+[ ] SQL injection
+[ ] SQLi authentication bypass
+[ ] SQLi error-based
+[ ] SQLi UNION-based
+[ ] SQLi blind
+[ ] SQLi time-based
+[ ] SQL database enumeration
+[ ] SQL credential extraction
+[ ] SQL command execution
+[ ] Command injection
+[ ] Blind command injection
+[ ] Command injection filter bypass
+[ ] Directory/path traversal
+[ ] Local File Inclusion (LFI)
+[ ] Remote File Inclusion (RFI)
+[ ] PHP wrappers
+[ ] LFI credential discovery
+[ ] LFI log poisoning
+[ ] LFI code execution
+[ ] File upload attacks
+[ ] File upload filter/MIME/extension bypass
+[ ] Web shell deployment
+[ ] Reflected XSS
+[ ] Stored XSS
+[ ] DOM XSS
+[ ] CSRF
+[ ] Open redirect
+[ ] SSRF
+[ ] XXE
+[ ] SSTI
+[ ] API attacks
+[ ] JWT attacks
+[ ] GraphQL attacks
+[ ] WebSocket attacks
+[ ] HTTP request smuggling
+
+## CREDENTIAL ATTACKS & CREDENTIAL ACCESS
+
+[ ] Default credential attacks
+[ ] Weak credential attacks
+[ ] Dictionary attacks
+[ ] Brute-force attacks
+[ ] Password spraying
+[ ] Credential stuffing
+[ ] Credential reuse
+[ ] Custom wordlists
+[ ] Password policy analysis
+[ ] Hash identification
+[ ] Hash cracking
+[ ] John the Ripper
+[ ] Hashcat
+[ ] Hashcat rules
+[ ] Hashcat masks
+[ ] NTLM cracking
+[ ] Net-NTLMv2 cracking
+[ ] Linux password hash cracking
+[ ] SSH key/passphrase attacks
+[ ] Configuration-file credential discovery
+[ ] Source-code credential discovery
+[ ] Environment-variable credential discovery
+[ ] Log credential discovery
+[ ] Shell-history credential discovery
+[ ] Backup credential discovery
+[ ] Database credential discovery
+[ ] Browser credential discovery
+[ ] Application credential discovery
+[ ] Windows Credential Manager
+
+## INITIAL ACCESS
+
+[ ] Exposed-service exploitation
+[ ] Public-facing application exploitation
+[ ] Weak/default credential access
+[ ] SSH access
+[ ] FTP access
+[ ] SMB access
+[ ] RDP access
+[ ] WinRM access
+[ ] Web shell access
+[ ] Reverse shell access
+[ ] Bind shell access
+[ ] Client-side initial access
+[ ] Public exploit modification
+[ ] Credential-based initial access
+
+## SHELLS & PAYLOADS
+
+[ ] Reverse shells
+[ ] Bind shells
+[ ] Bash payloads
+[ ] Netcat payloads
+[ ] Python payloads
+[ ] PHP payloads
+[ ] PowerShell payloads
+[ ] Windows executable payloads
+[ ] Staged payloads
+[ ] Non-staged payloads
+[ ] msfvenom
+[ ] Meterpreter
+[ ] Shell stabilization
+[ ] PTY spawning
+[ ] Payload transfer
+[ ] Callback troubleshooting
+[ ] Basic payload encoding/obfuscation
+
+## LINUX PRIVILEGE ESCALATION
+
+[ ] SUID/SGID abuse
+[ ] sudo abuse
+[ ] GTFOBins
+[ ] Linux capabilities
+[ ] Writable files/directories
+[ ] Writable scripts
+[ ] PATH hijacking
+[ ] Cron jobs
+[ ] Cron wildcard injection
+[ ] Systemd timers
+[ ] Writable services
+[ ] Service configuration abuse
+[ ] Environment-variable abuse
+[ ] Credential-based privilege escalation
+[ ] SSH key abuse
+[ ] Shell-history abuse
+[ ] Configuration/log credential discovery
+[ ] Linux kernel exploitation
+[ ] Kernel exploit research
+[ ] Kernel exploit compilation
+[ ] LinPEAS
+[ ] Manual Linux privilege escalation
+
+## WINDOWS PRIVILEGE ESCALATION
+
+[ ] Service enumeration
+[ ] Weak service permissions
+[ ] Writable service binaries
+[ ] Writable service configuration
+[ ] Service binary replacement
+[ ] Unquoted service paths
+[ ] DLL hijacking/search-order hijacking
+[ ] Scheduled task enumeration
+[ ] Writable scheduled-task executables
+[ ] Scheduled task abuse
+[ ] PATH hijacking
+[ ] Registry weaknesses
+[ ] AlwaysInstallElevated
+[ ] AutoRun abuse
+[ ] Stored credentials
+[ ] Windows Credential Manager
+[ ] Sensitive file discovery
+[ ] Weak file/directory permissions
+[ ] Windows token privileges
+[ ] Token impersonation
+[ ] SeImpersonatePrivilege
+[ ] SeAssignPrimaryTokenPrivilege
+[ ] SeBackupPrivilege
+[ ] SeRestorePrivilege
+[ ] SeDebugPrivilege
+[ ] SeTakeOwnershipPrivilege
+[ ] Potato-family techniques
+[ ] Windows kernel exploitation
+[ ] Windows kernel exploit research
+[ ] WinPEAS
+[ ] PowerUp
+[ ] Seatbelt
+[ ] Manual Windows privilege escalation
+
+## ACTIVE DIRECTORY ENUMERATION
+
+[ ] Domain enumeration
+[ ] Domain controller enumeration
+[ ] User enumeration
+[ ] Group enumeration
+[ ] Computer enumeration
+[ ] OU enumeration
+[ ] Group membership enumeration
+[ ] Nested group enumeration
+[ ] Logged-on user/session enumeration
+[ ] SMB enumeration
+[ ] LDAP enumeration
+[ ] RPC enumeration
+[ ] SPN enumeration
+[ ] Password policy enumeration
+[ ] GPO enumeration
+[ ] ACL/object-permission enumeration
+[ ] Trust enumeration
+[ ] BloodHound
+[ ] SharpHound
+[ ] Manual AD attack-path analysis
+
+## ACTIVE DIRECTORY AUTHENTICATION
+
+[ ] NTLM authentication
+[ ] Net-NTLMv2 capture
+[ ] NTLM relay
+[ ] Pass-the-Hash
+[ ] Overpass-the-Hash
+[ ] Kerberos authentication
+[ ] TGT/TGS concepts
+[ ] Pass-the-Ticket
+[ ] SPNs
+[ ] Kerberoasting
+[ ] Kerberos ticket extraction
+[ ] Kerberoast hash cracking
+[ ] AS-REP roasting
+[ ] AS-REP hash cracking
+[ ] AD password spraying
+[ ] AD credential reuse
+
+## ACTIVE DIRECTORY OBJECT & PRIVILEGE ABUSE
+
+[ ] Group abuse
+[ ] Nested group abuse
+[ ] ACL abuse
+[ ] GenericAll
+[ ] GenericWrite
+[ ] WriteDACL
+[ ] WriteOwner
+[ ] ForceChangePassword
+[ ] AddMember
+[ ] Resource-Based Constrained Delegation (RBCD)
+[ ] Kerberos delegation abuse
+[ ] Silver Tickets
+[ ] Golden Tickets
+[ ] Domain privilege escalation
+[ ] AD secret/hash/key extraction
+
+## ACTIVE DIRECTORY LATERAL MOVEMENT
+
+[ ] SMB lateral movement
+[ ] PsExec
+[ ] Service execution
+[ ] WinRM / WinRS
+[ ] WMI
+[ ] DCOM
+[ ] Remote scheduled tasks
+[ ] Remote service creation
+[ ] Pass-the-Hash lateral movement
+[ ] Pass-the-Ticket lateral movement
+[ ] Overpass-the-Hash lateral movement
+[ ] Credential-based lateral movement
+[ ] Session-based lateral movement
+
+## PIVOTING & PORT FORWARDING
+
+[ ] Network segmentation analysis
+[ ] Pivot identification
+[ ] Interface/route enumeration
+[ ] Reachability analysis
+[ ] SSH local port forwarding
+[ ] SSH remote port forwarding
+[ ] SSH dynamic forwarding
+[ ] SSH SOCKS proxying
+[ ] Proxychains
+[ ] SOCKS4/5
+[ ] Chisel
+[ ] Reverse tunnels
+[ ] Socat forwarding
+[ ] Netcat forwarding
+[ ] Meterpreter forwarding
+[ ] Metasploit routing
+[ ] Windows netsh portproxy
+[ ] Windows pivoting
+[ ] Linux pivoting
+[ ] Multihop pivoting
+[ ] Internal web access through pivot
+[ ] Internal SMB/AD access through pivot
+[ ] Routing tools through a tunnel
+
+## METASPLOIT
+
+[ ] Module searching
+[ ] Auxiliary modules
+[ ] Exploit modules
+[ ] Payload selection
+[ ] Module options
+[ ] Sessions
+[ ] Meterpreter
+[ ] Meterpreter file/system operations
+[ ] Meterpreter pivoting
+[ ] Meterpreter port forwarding
+[ ] Post-exploitation modules
+[ ] Exploit automation
+[ ] Manual exploitation alongside Metasploit
+
+## EXPLOIT DEVELOPMENT & BUFFER OVERFLOWS
+
+[ ] Vulnerable-code analysis
+[ ] Exploit source modification
+[ ] Architecture identification
+[ ] Stack/register fundamentals
+[ ] Buffer overflow exploitation
+[ ] Offset discovery
+[ ] Cyclic patterns
+[ ] Instruction pointer control
+[ ] Shellcode
+[ ] Payload modification
+[ ] Exploit compilation
+[ ] Cross-compilation
+[ ] Exploit debugging
+
+## CLIENT-SIDE ATTACKS
+
+[ ] Malicious document attacks
+[ ] Malicious link attacks
+[ ] Browser-based attacks
+[ ] Office/client application exploitation
+[ ] Client-side exploit modification
+[ ] Payload delivery
+[ ] User-interaction-based execution
+[ ] Reverse callback from client
+
+## AV / EDR EVASION FUNDAMENTALS
+
+[ ] Signature-based detection
+[ ] Static detection
+[ ] Behavioral detection
+[ ] Payload modification
+[ ] Obfuscation
+[ ] Encoding vs encryption
+[ ] Basic AV/EDR testing
+[ ] Isolated payload testing
+
+## POST-EXPLOITATION
+
+[ ] Post-compromise host enumeration
+[ ] Privilege enumeration
+[ ] Credential discovery
+[ ] User/account discovery
+[ ] Host/network discovery
+[ ] Interface/route discovery
+[ ] Service discovery
+[ ] Sensitive-file discovery
+[ ] Credential extraction
+[ ] Privilege-escalation path discovery
+[ ] Lateral-movement path discovery
+[ ] Pivot-path discovery
+
+## PERSISTENCE / POST-COMPROMISE
+
+[ ] Scheduled-task persistence
+[ ] Service persistence
+[ ] Registry persistence
+[ ] SSH persistence
+[ ] Credential-based persistence
+[ ] Golden-ticket persistence concepts
+[ ] Shadow-copy concepts
+
+## ATTACK CHAINING
+
+[ ] Recon → vulnerability identification
+[ ] Enumeration → exploitation
+[ ] Web exploitation → shell
+[ ] Credential discovery → remote access
+[ ] Initial access → privilege escalation
+[ ] Initial access → credential access
+[ ] Initial access → pivot
+[ ] Pivot → internal enumeration
+[ ] Pivot → internal exploitation
+[ ] Compromise → lateral movement
+[ ] Lateral movement → privilege escalation
+[ ] AD enumeration → credential attack
+[ ] AD credential attack → lateral movement
+[ ] AD lateral movement → domain escalation
+[ ] Multiple low-severity weaknesses → combined compromise
+
+# PROGRESS
+
+Total techniques: 286
+
+[ ] = 0/286 studied
+[~] = 0/286 understood
+[+] = 0/286 labbed
+[x] = 0/286 successfully used
+[★] = 0/286 mastered
+
+Progress:
+[ ] [~] [+] [x] [★]
+
+Update the counts as techniques advance.
