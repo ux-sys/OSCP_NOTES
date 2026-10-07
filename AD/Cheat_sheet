@@ -1,1 +1,48 @@
 
+AD
+
+First step is breach (gain valid credentials for domain)
+
+Techniques:
+
+LLMNR poisoning (and NBT-NS) (Legacy protocol ) | MITM
+Problems: 1 lack of authentication in checking name
+2 automated authentication
+3 authentication to service sending sensitive information that can be reused
+Crack password offline
+Can also relay (send credentials to other server, can be mitigated with EPA)
+
+Run responder in morning:
+sudo responder -I <interface> -dwv
+
+# What is underlying CWE category?
+
+SMB relay
+Reuqirements:
+Check if SMB signing is enabled
+Relay must be to other PC, user must have local admin on other device?
+SMB signing is force enabled in new devices
+# to check if viable:
+nmap --script=smb2-security-mode.nse -p445 192.168.0.0/24 -oN scan_TCM_AD_SMB_signing
+To perform attack edit:
+nano /etc/responder/Responder.conf
+# set smb and http to Off
+impacket-ntlmrelayx -tf targets.txt -smb2support
+# targets should have  =IP to relay to, aka victim
+SMB relay only relays SMB service and therefore when successful gives an SMB service connection
+
+# How does file sharing work and how far does it go in file system?
+
+NTLM relay
+
+
+# Questions
+what if network discovery is off?
+Direct access to file still results in credential sent
+Ping still available
+
+Network discovery relies on higher level protocols for visibility in file explorer, only disables automatic browsing. Eg.- LLTD, SSDP, WSD
+
+File share allows certain ports open and connect
+
+GPO to enable or how do most orgs handle?
