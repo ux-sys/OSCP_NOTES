@@ -1,0 +1,22 @@
+Kerberos
+
+trust third party
+
+TGT = general convention pass
+Service Ticket = specific pass for specific action/activity/service
+
+AS = authentication service
+
+AS-REQ -> AS-REP 
+
+
+kerberos AS-REQ = 1 packet
+fields, padata (pre-authentication data) contains PA-ENC-TIMESTAMP (heart of security mechanism)
+
+impacket-getTGT <domain.local>/<username>:<password>
+
+
+# Password must be stored as hash, storing in plaintext is bad. 
+# But if the server only knows the hash, therefore, how does it ask challenges that aren't derived solely from the hash? 
+
+Kerberos rc4 vs AES
