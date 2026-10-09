@@ -1,0 +1,13 @@
+SMB relay deactivated defualt after windows 11 24H2
+TO disable, open gpmc.msc on DC, create GPO and click "edit" on it, navigate to:
+Computer Configuration > Policies > Windows Settings > Security Settings > Local Policies > Security Options
+Disable the SMB signing policies (Microsoft network client/server: Digitally sign communications...) 
+*Note there is client and server as separate policies, and each has (always) and (if client agrees)
+*Unsure of which is necessary, but for lab I disabled all 4
+Create separate OU for vulnerable machines
+In gpmc.msc click on the OU and link it to the GPO
+*Unsure if necessary, but set enforced on the GPO
+
+#WOrked at first, isn't working, resorting to local policy for now
+Set-SmbServerConfiguration -RequireSecuritySignature $false -Force
+
