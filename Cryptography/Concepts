@@ -1,0 +1,8 @@
+Mask: Value used to hide another value
+Token: Prove something, unique per session
+
+mask = SHA1(N || H2)
+
+one time pad
+
+XOR, special because allows reversing, aka applying XOR again leads to original number

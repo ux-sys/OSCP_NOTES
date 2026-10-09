@@ -245,3 +245,30 @@ You've now precisely identified the source of your confusion: the word "hash" wa
 ...everything falls into place. MySQL is secure because H2 ≠ H1. NTLM is insecure because H2 = H1. Windows is dangerous because H1 is stored in LSASS, SAM, and NTDS.dit. MySQL is safer because H1 is never stored anywhere persistent.
 
 This is the framework. You now have the vocabulary and the mental model to analyze any authentication protocol you encounter.
+
+
+
+###### 
+
+### MySQL Challenge-Response Authentication: Why the Stored Hash Is Not Directly Reusable
+
+**Core idea:** The value stored by the server is not necessarily the same value that the client needs to generate a valid authentication response.
+
+In the traditional `mysql_native_password` scheme:
+
+* The client derives \(H_1=\operatorname{SHA1}(P)\) and \(H_2=\operatorname{SHA1}(H_1)\).
+* The server stores \(H_2\).
+* The server sends a challenge \(N\).
+* The client computes \(R=H_1\oplus\operatorname{SHA1}(N\parallel H_2)\).
+* The server reconstructs \(H_1'=R\oplus\operatorname{SHA1}(N\parallel H_2)\).
+* The server verifies the response by checking whether \(\operatorname{SHA1}(H_1')=H_2\).
+
+**Relevant properties and concepts:**
+
+1. **One-way hashing:** The server can verify a candidate without storing the plaintext password.
+2. **Challenge-response:** The response depends on a server-provided challenge.
+3. **Nonce freshness:** A new challenge helps prevent straightforward replay of an old response.
+4. **Verifier versus credential:** The stored verifier \(H_2\) is not directly interchangeable with the response-generating value \(H_1\).
+5. **Offline guessing remains possible:** A captured response and challenge allow candidate passwords to be tested offline. Fast, unsalted hashing makes this scheme weak by modern standards.
+
+**Security lesson:** Whether a stolen hash enables Pass-the-Hash depends on how the authentication protocol uses that hash. A hash can be a verifier in one scheme and directly usable credential material in another.

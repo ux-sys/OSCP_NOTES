@@ -20,3 +20,37 @@ impacket-getTGT <domain.local>/<username>:<password>
 # But if the server only knows the hash, therefore, how does it ask challenges that aren't derived solely from the hash? 
 
 Kerberos rc4 vs AES
+
+
+
+#####
+
+Every password-based authentication mechanism must store something to verify future authentication attempts. 
+The danger arises when the stored value is the same as the value used by clients to respond to challenges. 
+If this stored value is stolen, an attacker can use it directly to authenticate, bypassing the need for the plaintext password. This is Pass-the-Hash.
+
+For PtH to be viable, two conditions must be met:
+
+The protocol must use the stored value as the authentication key.
+
+The attacker must be able to obtain that stored value (e.g., from LSASS, SAM, or NTDS.dit on Windows).
+
+A robust mitigation is to ensure the server stores a one-way verifier of the key, not the key itself. The verifier can confirm that the client knows the key, but cannot be used to authenticate.
+
+MySQL achieves this by storing H2 = SHA1(SHA1(password)) instead of H1 = SHA1(password). During authentication:
+
+The server sends a nonce N.
+
+The client computes token = SHA1(N ‖ H2) XOR H1 and sends it.
+
+The server computes mask = SHA1(N ‖ H2), recovers H1 = token XOR mask, and verifies SHA1(H1) == H2.
+
+The stored value H2 is a one-way function of the authentication key H1. Stealing H2 does not allow authentication because the attacker cannot derive H1 from it. The nonce prevents replay. The XOR with H1 proves knowledge of the key without transmitting it.
+
+This is an example of verifier-based authentication, where the server stores a commitment (a one-way function) to the secret rather than the secret itself. It is fundamentally more resistant to credential theft than NTLM or RC4 Kerberos, which store the authentication key directly.
+
+####
+authenticate
+JWT
+OIDC/OAUTH
+fido2
