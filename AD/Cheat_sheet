@@ -51,6 +51,12 @@ impacket-wmiexec marvel.local/fcastle:Password1@192.168.0.5
 
 # all of these bring file downloads which can be detected
 
+# IPv6 attacks
+ 
+# Relies on IPv6 being active but not configured, and we take the role of the DNS for IPv6 connections
+
+# setup certificate server role to enable LDAPS?
+
  
 # How does file sharing work and how far does it go in file system?
 
