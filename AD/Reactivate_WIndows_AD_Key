@@ -1,0 +1,29 @@
+
+Steps to Reset Activation
+
+1. Open Command Prompt as Administrator:
+	• Click the Start menu, type cmd, right-click Command Prompt, and select Run as administrator.
+2. Uninstall the Current Product Key:
+	• Run the following command to remove the active product key from the system registry:cmd
+slmgr.vbs /upk
+Use code with caution.
+3. Clear Product Key Traces from Registry:
+	• Run the following command to scrub the uninstalled key residue from the registry:cmd
+slmgr.vbs /cpky
+Use code with caution.
+4. Reboot the Server:
+	• Restart your computer immediately to finalize the removal:cmd
+shutdown /r /t 0
+Use code with caution.
+5. (Optional) Extend or Rearm Grace Period:
+	• If you need to reset the evaluation grace period counter (where supported), you can run:cmd
+slmgr.vbs /rearm
+Use code with caution.
+
+Reapplying a New Key or Converting Editions
+
+• To install a new product key later: Run slmgr.vbs /ipk <Your-Product-Key> followed by slmgr.vbs /ato, or navigate to Settings > System > Activation > Change product key.
+• To convert from an Evaluation build to a Retail/Volume build: Use the DISM command-line tool before or alongside your key installation:cmd
+DISM /online /Set-Edition:ServerStandard /ProductKey:XXXXX-XXXXX-XXXXX-XXXXX-XXXXX /AcceptEula
+Use code with caution.
+(Replace ServerStandard with ServerDatacenter if using the Datacenter edition, and reboot when prompted).
