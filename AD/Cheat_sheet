@@ -57,7 +57,14 @@ impacket-wmiexec marvel.local/fcastle:Password1@192.168.0.5
 
 # setup certificate server role to enable LDAPS?
 
+# Mitigation? LDAP signing, LDAPS channel binding
+
+# For windows 2025 and 11 disable protections w/
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters" /v LDAPServerIntegrity /t REG_DWORD /d 0 /f #LDAP signing remove 
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters" /v LdapEnforceChannelBinding /t REG_DWORD /d 0 /f #LDAPS Channel binmding removed
+ # Couldn't remove ldap signing but LDAPS channel binding removal allowed attack to proceed
  
+
 # How does file sharing work and how far does it go in file system?
 
 NTLM relay
