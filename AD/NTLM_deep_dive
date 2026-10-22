@@ -1,0 +1,55 @@
+NTLM relay attack HTB
+
+SMB (Confidentiality = sealing, Integrity = signing)
+SMB encryption = Confidentiality + Integrity
+
+Protections:
+SMB signing (+smb EPA)
+EPA (Channel binding) for HTTP
+#How do they work?
+#SMB encryption more secure but separate?
+SMB signing adds MAC and Session Key during NTLM process.
+SMB signing DOES NOT encrypt, and only adds a MAC verifier # Server uses MAC to check message tampering
+
+MAC = HMAC-SHA256(session_key, entire_SMB_message)
+
+#Core security in SMB signing is Session Key
+#Attacker NEEDS Session Key to sign messages properly
+#Session Key is made up of (Hash + Server Challenge + Additional nonces)
+DC gives Server Session Key through NETLOGON_VALIDATION_SAM_INFO4
+
+
+#Vulnerabilities
+Drop the MIC & Drop the MIC 2 (Bypass signing requirement by removing fields from smb messages)
+Your Session Key is my Session Key (Pretend to be server, and send netlogon_network_info to obtain Session Key from DC)
+
+MIC = Message Integrity Code. It's a field inside the NTLM AUTHENTICATE message that signs the entire NTLM exchange (all three messages: NEGOTIATE, CHALLENGE, AUTHENTICATE). It's computed using the ExportedSessionKey. It's separate from SMB signing — MIC protects the NTLM messages themselves; SMB signing protects the SMB messages.
+
+
+
+Pre-Relay (Get victim to authenticate to YOU) -> Relay -> Server defenses (signing or EPA) -> Post relay attack (depends on service)
+
+Pre-Relay, use name backup windows resolution protocols (LLMNR, MDNS, NetBios) to spoof
+Coercion ^
+
+DHCP poisoning with DHCPv6 to add an IPv6 DNS is dangerous because it will mess normal requests and is persistent
+
+NTLM Auth protocol (Protocol USED to perform the auth). Only SMB or HTTP
+AUth protocol changes mechanisms
+# Which is best?
+
+NTLM can be used as a SSP (security support provider) through an SSPI (Interface API, SSPI could be kerberos) for any protocol if integrated
+
+NTLM message types:
+Negotiate client -> server
+Challenge server -> client
+Authenticate client -> server
+
+Server → DC: NetrLogonSamLogon (containing NETLOGON_NETWORK_INFO structure with the NTLM challenge-response)
+DC → Server: NetrLogonSamLogon response containing NETLOGON_VALIDATION_SAM_INFO4 with the session key
+
+Server verifies information locally for workgroup or sends info to DC
+
+Responder (poisons traffic and captures it) vs NTLMRELAYX (forwards and relays traffic)
+Disable responder services u want to relay
+responder alternative: https://github.com/RedTeamPentesting/pretender
