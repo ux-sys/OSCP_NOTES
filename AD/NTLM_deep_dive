@@ -53,3 +53,8 @@ Server verifies information locally for workgroup or sends info to DC
 Responder (poisons traffic and captures it) vs NTLMRELAYX (forwards and relays traffic)
 Disable responder services u want to relay
 responder alternative: https://github.com/RedTeamPentesting/pretender
+
+
+Version	Challenge-Response	Relay Difficulty	Cracking Difficulty
+NTLMv1	DES-based, weak	Easier to relay (no MIC, no target info)	Trivial (rainbow tables, crack.sh)
+NTLMv2	HMAC-MD5-based, includes client nonce + timestamp + target info	Harder to relay (MIC, target info binding)	Harder (but still crackable with weak passwords)

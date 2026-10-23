@@ -1,0 +1,8 @@
+# TO DO: MAKE PIPELINE THINKING
+
+# Discover targets
+nmap -p 445 --open 192.168.0.0/24 -oA targets
+cut -d " " -f 5 targets.nmap | grep "192" > ip_list.txt
+# Enumerate services on targets
+nmap -iL ip_list.txt -p- -sV -Pn -T4 --max-retries=1 --disable-arp-ping -n -oA services
+# 
