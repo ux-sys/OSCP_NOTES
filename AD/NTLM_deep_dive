@@ -29,7 +29,7 @@ MIC = Message Integrity Code. It's a field inside the NTLM AUTHENTICATE message 
 
 Pre-Relay (Get victim to authenticate to YOU) -> Relay -> Server defenses (signing or EPA) -> Post relay attack (depends on service)
 
-Pre-Relay, use name backup windows resolution protocols (LLMNR, MDNS, NetBios) to spoof (ARP, DNS, DHCP, DHCPv6, ADIDNS, WPAD, WSUS)
+Pre-Relay, use name backup windows resolution protocols (LLMNR, MDNS, NetBios (Multicast)) to spoof (ARP, DNS, DHCP, DHCPv6, ADIDNS, WPAD, WSUS)
 Coercion ^
 
 DHCP poisoning with DHCPv6 to add an IPv6 DNS is dangerous because it will mess normal requests and is persistent
@@ -65,3 +65,4 @@ If hostname ends in .local uses LLMNR
 If hostname is only one domain, Eg. http://marvel or smb://myserver uses LLMNR/mDNS
 
 Microsoft focusing on keeping mDNS
+
