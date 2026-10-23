@@ -82,6 +82,13 @@ File share allows certain ports open and connect
 
 GPO to enable or how do most orgs handle?
 
+Order Windows Machine checks permissions?
+• Account: The user or computer account.
+• Global: Put the account into a Global Group (used to organize accounts based on business roles).
+• DomainLocal: Put the Global Group into a Domain Local Group (used to grant specific resource permissions).
+• Permissions: Assign the actual resource Permissions (like Read or Modify) directly to the Domain Local Group.
+
+
 ###
 
 What proof does the client send?
