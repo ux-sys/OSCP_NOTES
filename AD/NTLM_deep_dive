@@ -29,7 +29,7 @@ MIC = Message Integrity Code. It's a field inside the NTLM AUTHENTICATE message 
 
 Pre-Relay (Get victim to authenticate to YOU) -> Relay -> Server defenses (signing or EPA) -> Post relay attack (depends on service)
 
-Pre-Relay, use name backup windows resolution protocols (LLMNR, MDNS, NetBios) to spoof
+Pre-Relay, use name backup windows resolution protocols (LLMNR, MDNS, NetBios) to spoof (ARP, DNS, DHCP, DHCPv6, ADIDNS, WPAD, WSUS)
 Coercion ^
 
 DHCP poisoning with DHCPv6 to add an IPv6 DNS is dangerous because it will mess normal requests and is persistent
@@ -57,4 +57,11 @@ responder alternative: https://github.com/RedTeamPentesting/pretender
 
 Version	Challenge-Response	Relay Difficulty	Cracking Difficulty
 NTLMv1	DES-based, weak	Easier to relay (no MIC, no target info)	Trivial (rainbow tables, crack.sh)
-NTLMv2	HMAC-MD5-based, includes client nonce + timestamp + target info	Harder to relay (MIC, target info binding)	Harder (but still crackable with weak passwords)
+NTLMv2	HMAC-MD5-based, includes client nonce + timestamp + target info	Harder to relay (MIC, target info binding) Harder (but still crackable with weak passwords)
+
+Notes:
+When windows DNS can't resolve hostname:
+If hostname ends in .local uses LLMNR
+If hostname is only one domain, Eg. http://marvel or smb://myserver uses LLMNR/mDNS
+
+Microsoft focusing on keeping mDNS
