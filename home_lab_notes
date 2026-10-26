@@ -1,0 +1,15 @@
+Download and create Win 11 VM
+
+Download VMBox Guest additions and add to unattended install. Enable bidirectional copy+paste in VM
+  
+Run sysprep
+
+cd C:\Windows\System32\Sysprep
+sysprep.exe /oobe /generalize /shutdown /mode:vm
+
+if error check C:\Windows\System32\Sysprep\Panther\setuperr.log in notepad
+
+notepad C:\Windows\System32\Sysprep\Panther\setuperr.log
+
+manage-bde -status C: #make sure it's fully decrypted. takes some time
+manage-bde -off C:
