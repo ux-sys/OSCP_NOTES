@@ -59,10 +59,25 @@ Version	Challenge-Response	Relay Difficulty	Cracking Difficulty
 NTLMv1	DES-based, weak	Easier to relay (no MIC, no target info)	Trivial (rainbow tables, crack.sh)
 NTLMv2	HMAC-MD5-based, includes client nonce + timestamp + target info	Harder to relay (MIC, target info binding) Harder (but still crackable with weak passwords)
 
+Multi Target attacks
+#Multi-Relaying is very inconsistent, however you can still attack multiple targets using -tf and --no-multirelay
+# Multi-plexing
+Multi-Relaying (uses STATUS_SESSION_EXPIRED (SMB)). 1 victim connection = many target connections # Not useable in smb2
+No-Multirelaying, use --no-multirelay. 1 victim connection = 1 target connection
+
 Notes:
 When windows DNS can't resolve hostname:
 If hostname ends in .local uses LLMNR
 If hostname is only one domain, Eg. http://marvel or smb://myserver uses LLMNR/mDNS
 
 Microsoft focusing on keeping mDNS
+
+# AMAZING LINK: https://www.thehacker.recipes/ad/movement/ntlm/relay
+
+
+##
+##TO DO
+MIC vs Signing
+SOCKS
+ADIDNS
 
