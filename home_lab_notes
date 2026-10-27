@@ -17,3 +17,15 @@ manage-bde -off C:
 #Turn off VM once done with sysprep. DOn't turn on again
 # right click vm, select clone, set linked clone, new adapter and MAC
 #NOTE: Use NAT connection type for adapter and choose domain join
+
+#Use nmcli to setup internal network in kali
+sudo nmcli connection add type ethernet con-name eth1 ifname eth1 ip4 192.168.1.253/24 gw4 192.168.1.1
+sudo nmcli connection modify eth1 ipv4.dns "8.8.8.8 8.8.4.4"
+sudo nmcli connection up eth1
+
+#if mistake in kali, use:
+nmcli connection show
+nmcli connection delete uuid <UUID-from-show-output>
+
+#test connectivity from Desktop to DC
+nltest /dsgetdc:<YourDomainName>
