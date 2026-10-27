@@ -13,3 +13,7 @@ notepad C:\Windows\System32\Sysprep\Panther\setuperr.log
 
 manage-bde -status C: #make sure it's fully decrypted. takes some time
 manage-bde -off C:
+
+#Turn off VM once done with sysprep. DOn't turn on again
+# right click vm, select clone, set linked clone, new adapter and MAC
+#NOTE: Use NAT connection type for adapter and choose domain join
