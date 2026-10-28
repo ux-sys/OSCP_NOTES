@@ -9,11 +9,13 @@ EPA (Channel binding) for HTTP
 #How do they work?
 #SMB encryption more secure but separate?
 SMB signing adds MAC and Session Key during NTLM process.
-SMB signing DOES NOT encrypt, and only adds a MAC verifier # Server uses MAC to check message tampering
+SMB signing DOES NOT encrypt, and only adds a HMAC verifier # Server uses MAC to check message tampering
+Every packet after the initial NTLM exchange, has an HMAC in the smb signature field, obtained through a hash
 
 MAC = HMAC-SHA256(session_key, entire_SMB_message)
 
 #Core security in SMB signing is Session Key
+# Session key 
 #Attacker NEEDS Session Key to sign messages properly
 #Session Key is made up of (Hash + Server Challenge + Additional nonces)
 DC gives Server Session Key through NETLOGON_VALIDATION_SAM_INFO4
@@ -25,7 +27,8 @@ Your Session Key is my Session Key (Pretend to be server, and send netlogon_netw
 
 MIC = Message Integrity Code. It's a field inside the NTLM AUTHENTICATE message that signs the entire NTLM exchange (all three messages: NEGOTIATE, CHALLENGE, AUTHENTICATE). It's computed using the ExportedSessionKey. It's separate from SMB signing — MIC protects the NTLM messages themselves; SMB signing protects the SMB messages.
 
-
+Session key is exchanged after NTLM exchange, meaning initial NTLM messages are not protected. HMIC ensures they aren't modified.
+However the best defense is having smb signing on the server be forced and required, as HMIC protects if the hacker tries downgrading or removing fields in the NTLM (such as saying smb isn't forced).
 
 Pre-Relay (Get victim to authenticate to YOU) -> Relay -> Server defenses (signing or EPA) -> Post relay attack (depends on service)
 
@@ -42,11 +45,11 @@ NTLM can be used as a SSP (security support provider) through an SSPI (Interface
 
 NTLM message types:
 Negotiate client -> server
-Challenge server -> client
-Authenticate client -> server
+Challenge server -> client # ServerChallenge, NegotiateFlags,NTLMSSP_NEGOTIATE_KEY_EXCH (set use mode 1, not set use mode2) 
+Authenticate client -> server # NTChallengeResponse (containing NTProofStr), mode 1 = EncryptedRandomSessionKeyFields (carrying the sealed random key), if mode 2 = NIL
 
 Server → DC: NetrLogonSamLogon (containing NETLOGON_NETWORK_INFO structure with the NTLM challenge-response)
-DC → Server: NetrLogonSamLogon response containing NETLOGON_VALIDATION_SAM_INFO4 with the session key
+DC → Server: NetrLogonSamLogon response (containing NETLOGON_VALIDATION_SAM_INFO4 with the session key)
 
 Server verifies information locally for workgroup or sends info to DC
 
@@ -72,12 +75,30 @@ If hostname is only one domain, Eg. http://marvel or smb://myserver uses LLMNR/m
 
 Microsoft focusing on keeping mDNS
 
-# AMAZING LINK: https://www.thehacker.recipes/ad/movement/ntlm/relay
-
+# AMAZING LINKS: https://www.thehacker.recipes/ad/movement/ntlm/relay
+# https://secureauth.com/resources/blog/we-love-relaying-credentials-technical-guide
 
 ##
 ##TO DO
 MIC vs Signing
 SOCKS
 ADIDNS
+
+
+####
+
+NT_hash (MD4 of password)
+    ↓
+ResponseKeyNT (HMAC_MD5 of NT_hash + Uppercase(User) + UserDomain) 
+    ↓
+NTProofStr (HMAC_MD5 of ResponseKeyNT + ServerChallenge + blob) 
+    ↓
+SessionBaseKey = HMAC_MD5(ResponseKeyNT, NTProofStr) 
+    ↓
+KeyExchangeKey (KXKEY)
+    ├── [MODE 2] ──> ExportedSessionKey = KeyExchangeKey
+    └── [MODE 1] ──> ExportedSessionKey = Nonce(16)  // A fresh random key
+                         ↓
+                     EncryptedRandomSessionKey = RC4K(KeyExchangeKey, ExportedSessionKey)
+
 
