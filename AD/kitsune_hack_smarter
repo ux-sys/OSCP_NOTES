@@ -1,0 +1,9 @@
+
+
+add kerberos
+sync time
+use nxc to check valid users
+change dns
+
+use ldaps if ldap fail
+use ldapdomaindump
