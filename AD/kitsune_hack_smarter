@@ -7,3 +7,5 @@ change dns
 
 use ldaps if ldap fail
 use ldapdomaindump
+
+sudo openvpn --config challenge_lab_kitsun.ovpn
