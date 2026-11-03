@@ -68,6 +68,17 @@ Multi Target attacks
 Multi-Relaying (uses STATUS_SESSION_EXPIRED (SMB)). 1 victim connection = many target connections # Not useable in smb2
 No-Multirelaying, use --no-multirelay. 1 victim connection = 1 target connection
 
+Cross Protocol notes
+Smb->ldap fail
+
+Ntlm flavors
+Smb, does announce signing capabilities (Announces session signing capabilities in Negotiation message, and it's not possible to modify it because of the MIC)
+Http, signing capability not announced (Use WPAD or WebDAV to coerce HTTP flavored NTLM) (Despite what HTB says, HTTP NTLM DOES support session signing, however it doesn't announce it)
+
+Because Ldap is opt out, (aka needs most requirements), then it will treat the signing as a must-sign
+
+Smb is opt in, and has least requirements
+
 Notes:
 When windows DNS can't resolve hostname:
 If hostname ends in .local uses LLMNR
