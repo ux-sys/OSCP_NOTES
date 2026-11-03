@@ -71,6 +71,46 @@ NTLM relay
 
 LDAP binding?
 
+Post-Exploitation Enumeration
+Download PowerView in Kali, use python http to serve it to target. Use 
+powershell -ep bypass
+#AV will block PowerView
+Make new folder, then in AV add folder to excluded list
+# Doesn't work as AV is blocking the in memory execution. Good on windows ngl
+# Best temporary fix is disable real time protection, unless you want to learn Win AV bypass
+#This is dot sourcing, don't try and execute normally
+. .\PowerView.ps1
+Import-Module .\PowerView.ps1
+
+get-netdomain
+Get-DomainPolicy # Get password policies and kerberos to understand potential attacks and defenses and considerations
+Get-DomainPolicy."system access" # Didn't work for me
+Get-NetUser # Similar can be accomplished natively with:
+Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount = 'False'"
+cmd net user /domain
+wmic useraccount where "localaccount=false" get name
+# Use select with power view to select users
+# Filter by: password last set (stale accounts), last logon (potential honeypot), description (potential secrets)
+# badpwcount is failed logins, resets to 0 after login success
+#Note, if command syntax fails, likely is using an older powerview
+Get-DomainUser
+Get-NetComputer
+Get-NetGroup
+# OUTDATED# Get-NetGroup -GroupName *admin*
+Get-NetGroup -Identity *admin* | select samaccountname
+Get-NetGroupMember -Identity "Domain Admins" # Newer syntax
+# If confused, use Get-Help <powerview command>
+example: Get-Help Get-NetGroup
+Invoke-ShareFinder
+
+###
+Mini meta notes:
+Learn to troubleshoot and diagnose failing tools
+Learn to use documentation and built in tools to find correct syntax and commands
+Understand what TCM is looking for, and why?
+
+
+#####
 # Questions
 what if network discovery is off?
 Direct access to file still results in credential sent
