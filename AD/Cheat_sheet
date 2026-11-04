@@ -143,7 +143,10 @@ impacket-GetUserSPNs target.local/username:password -dc-ip <Domain_Controller_IP
 # Must derive AES key from user pass
 #Didn't work https://raw.githubusercontent.com/TacticalGator/ADKeygen/refs/heads/main/ADKeygen.py
 
-Kerberoasting on Server 2025: RC4 disabled by KDC, Impacket GetUserSPNs fails with ETYPE_NOSUPP (no AES-forcing flag). Orpheus (TrustedSec) with enc 18 → AES256 TGS. Crack with hashcat -m 19700.
+Kerberoasting (Server 2025, Orpheus): Impacket stock fails with ETYPE_NOSUPP (RC4-only request rejected). Orpheus (patched Impacket, enc 18) succeeds
+But KDC issued etype 23 (RC4) anyway, hash prefix $krb5tgs$23$, cracked with hashcat -m 13100. Mode 19700 failed because the hash was RC4, not AES. 
+Always check the hash prefix before choosing the mode; the KDC decides etype, not the client toggle.
+
 https://github.com/trustedsec/orpheus
 hashcat -m 13100 -a 0 spns.txt $ROCKYOU #this worked, evem when using enc 18?
 
