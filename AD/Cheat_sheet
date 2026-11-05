@@ -144,6 +144,8 @@ impacket-psexec "Frank Castle":@192.168.1.100 -hashes aad3b435b51404eeaad3b435b5
 # Failed because it typically needs access to the $ADMIN or $C shares, which are typically restricted to the built-in local Administrator account
 # SVCManager
 # Windows strips local admin of admin priviilegs (more accurate framing needed), when connecting remotely through UAC limitinh access to C$ and ADMIN$ Shares. BUT Domain accounts don't. 
+# More accurately, Windows has a LocalAccountTokenFilterPolicy / UAC remote restrictions that filters local accounts that attempt remote logon giving them a filtered token instead of full token.
+# Domain accounts get full token
 Use mimikatz potentially to steal a domain hash, then use it in PtH and succeed at impacket-psexec
 # Mimikatz didn't seem to work, failed, check later
 impacket-secretsdump MARVEL.local/fcastle:Password1@192.168.1.100
@@ -153,9 +155,20 @@ https://viperone.gitbook.io/pentest-everything/everything/everything-active-dire
 Note:
 # LM hash (VERY outdated and bad)
 # NT hash (Hashes of local accounts. In SAM. Can be used in PtH. Can also be cracked.) #TODO, does it also store network account hashes? 
+# ASNWERED DOES NOT STORE NETWORK ACCOUNT HASHES
 # SAM stored hash has LM:NT stored as both hashes. The LM hash is generic and same
 # NetNTLMv1 and NetNTLMv2 hash (Hash used during NTLM auth over network, can't be used for PtH, can still be cracked. Can be relayed). 
-# NetNTLMv1 hashes are older and easier to crack. Both use  HMAC-MD5 to hash
+# NetNTLMv1 hashes are older and easier to crack. v2 uses HMAC-MD5 to hash
+# v1 uses the WAY MORE outdated and is DES-based: the 16-byte NT hash is split into three 7-byte chunks, each used as a DES key to encrypt the 8-byte challenge, producing a 24-byte response
+# Aka leaks the hash accidentally
+# Domain cached credentials (DCC/DCC2, formerly "mscache") live in the SECURITY hive, not SAM. They're a different format entirely—mscash/mscash2, crackable with hashcat -m 1100/-m 2100.
+# These can't be used in PTH, but can be found with secretsdump
+# SAM = local accounts. SECURITY hive = cached domain creds. Nowhere = NetNTLM (computed per-auth)
+
+Clearer notes:
+PtH: requires NT hash (not NetNTLM), target accepts NTLM auth, the account has the privilege the target service needs, and the service accepts the auth method
+(SMB works; RDP doesn't by default unless Restricted Admin is enabled)
+
 
 SUPER HUGE NOTE:
 KALI VM may choose internal network adapter for services like firefox, brickign them temporarily
