@@ -35,3 +35,15 @@ Does WIndows load DLLs upon booting? Likely yes
 # Where does TPM fit
 
 https://medium.com/@vershow/windows-boot-process-for-security-analysis-99f84d3e4b6a
+
+# Shower notes?
+Is Bootloader a PE or ELF? What file format?
+How initialized is the CPU? How does CPU know what partitioning scheme storage device is using?
+But these are weird questions, because once the CPU is fully initialized, it doesn't change much. Kernel is program that manages more tightly. CPU understands raw assembly, does it not?
+But wouldn't it need a kernel to manage it's memory? Or is code specially built and CPU is capable of handling the UEFI and Boot manager+loader on it's own? Is UEFI run on CPU or other chip?
+
+FOCUS
+Main question, how does CPU know which partitioning scheme, in order to load the correct boot manager
+is .efi a PE?
+once .exe is loaded, is PE, so is start of OS?
+
