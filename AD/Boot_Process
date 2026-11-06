@@ -1,0 +1,37 @@
+Storage Drive
+# SKipping Standby Power and the Power Button & PSU Activation and Voltage Stabilization
+CPU looks at hardcoded memory addr in non volatile memory (type of FLASH) pointing to BIOS/UEFI firmware
+# Settings live in NVRAM (like password, boot order), SRAM (volatile memory) holds legacy settings and clock, when CMOS battery removed, SRAM loses power and loses memory
+# Firmware = low level code permanently or semi embedded into hardware, for basic functions
+# Aka hardware ALWAYS knows where to look for the instructions
+BIOS/UEFI execute POST, which Initializes rest of hardware firmware # Loads EXTREMELY basic 
+BIOS/UEFI checks boot order storage medium
+Find boot manager section of code (DEPENDS partition scheme) # Wirth secure boot UEFI can validate bootloader against known good keys
+#NOTE, Boot manager allows user to select OS to load
+# Boot loader takes choice and loads into RAM
+# GRUB is both
+# Windows (\\EFI\\Microsoft\\Boot\\bootmgfw.efi) = Boot Manager & (winload.exe) = bootloader
+# DEPENDS ON MBR or GPT
+MBR uses first sector of drive
+#The motherboard's BIOS reads the very first sector of the drive (the 512-byte MBR), which contains tiny bootloader code (446 bytes) and a partition table. 
+#It executes whatever code is in that sector to hand off control to the OS.
+GPT uses specific partition containing the bootloader code. hidden EFI System Partition (ESP)
+
+Firmware loads bootloader selected in previous step (Windows Boot Manager or GRUB) from storage to memory (RAM)
+Bootloader finds and runs the kernel
+Kernel initializes hardware drivers, background system services (dameons Linux or Services Windows) # Loads more complex device drivers stored in storage, such as NVIDIA RTX 5050 drivers for gaming
+User initialization
+System Initialization
+Logon Phase
+
+#ACTUAL Windows Boot
+
+
+# Questions
+How does Driver interact with Kernel?
+ByoVD?
+Does WIndows load DLLs upon booting? Likely yes
+
+# Where does TPM fit
+
+https://medium.com/@vershow/windows-boot-process-for-security-analysis-99f84d3e4b6a
