@@ -24,3 +24,4 @@ Wmi exec <hostname_or_target_ip> -ha <host_address> -UserName <username> -UserDo
 ldapdomaindump.py -u 'DOMAIN\username' -p 'password' HOSTNAME
 # check domain_policy to check password lockout
 nxc smb <target-ip-or-domain> -u users.txt -p Password123
+certipy find -u 'username@domain.local' -p 'password' -dc-ip <DC_IP> -vulnerable
