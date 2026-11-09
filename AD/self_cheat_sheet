@@ -51,3 +51,5 @@ impacket-describeTicket user.ccache --aes <aes_key> #requires aes key of krbtgt 
 
 # verifying group membership
 pypykatz kerberos ccache list $KRB5CCNAME
+
+echo -n 'Password1' | iconv -t utf16le | openssl md4 # make NTLM hash
