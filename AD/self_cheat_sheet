@@ -1,5 +1,7 @@
 # TO DO: MAKE PIPELINE THINKING
 sudo openvpn --config /path/to/your-file.ovpn
+sudo timedatectl set-ntp off
+sudo rdate -n <dc-ip>
 
 # Discover targets
 nmap -p 445 --open 192.168.0.0/24 -oA targets
