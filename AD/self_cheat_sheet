@@ -78,3 +78,16 @@ nmap -p 3389 --script ssl-enum-ciphers 10.1.152.66
 #TODO, make a command to set current target directory to not have to type it in everytime, aka instead of typing ~/workspace/target... make a command to temporarily set it? Maybe in newtarget
 
 for xfreerdp3 need klist set, and the krb5.conf
+
+evil-winrm -i 10.1.152.66 -u schlop -p Password1 #worked?
+#note found Bing.url, points to legit url, perhaps potential to be used in url attack?
+
+tree /F
+$cred = Import-Clixml -Path "C:\path\to\your-credential.xml"
+
+# Check the type (should be System.Management.Automation.PSCredential)
+$cred.GetType().FullName
+
+# Check the username
+$cred.UserName
+
